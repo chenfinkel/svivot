@@ -1,0 +1,102 @@
+<p><span id="abdror"data-shadow-text="Text-Shadow">Prague Advisor- Register page</span></p>
+<p><div class="reg">
+  <form name="form" novalidate>
+    <label>fill all the fields below</label>
+    <br>
+    <hr>
+    <br>
+      <label>First name:
+          <input type="text" ng-model="rgstrCtrl.Fname" name="Fname" required />
+          <span ng-show="form.$submitted || form.Fname.$touched">
+                <span ng-show="form.Fname.$error.required">Enter your first name.</span>
+              </span>
+        </label>
+        <br>
+        <label>Last name:
+            <input type="text" ng-model="rgstrCtrl.Lname" name="Lname" required />
+            <span ng-show="form.$submitted || form.Lname.$touched">
+                    <span ng-show="form.Lname.$error.required">Enter your last name.</span>
+                  </span>
+          </label>
+          <br>
+          <label>User name:
+              <input type="text" ng-pattern="/^[a-zA-Z]*$/" ng-maxlength="8" ng-minlength="3" ng-model="rgstrCtrl.userName" name="userName" required />
+              <span ng-show="form.$submitted || form.userName.$touched">
+                      <span ng-show="form.userName.$error.required">Enter your user name.</span>
+                    </span>
+                    <span ng-show="form.userName.$error.maxlength">Please enter less than 9 characters.</span>
+                    <span ng-show="form.userName.$error.minlength">Please enter more than 2 characters.</span>
+                    <span ng-show="form.userName.$error.pattern">Text only, please.</span>
+            </label>
+            <br>
+            <label>Password:
+                <input type="password" ng-pattern="/^[a-zA-Z0-9]*$/" ng-maxlength="10" ng-minlength="5" ng-model="rgstrCtrl.Password" name="Password" required />
+                <span ng-show="form.$submitted || form.Password.$touched">
+                        <span ng-show="form.Password.$error.required">Enter your password.</span>
+                      </span>
+                      <span ng-show="form.Password.$error.maxlength">Please enter less than 11 characters.</span>
+                      <span ng-show="form.Password.$error.minlength">Please enter more than 4 characters.</span>
+                      <span ng-show="form.Password.$error.pattern">Text and numbers only, please.</span>
+              </label>
+              <br>
+              <label>Country:
+                  <select ng-model="rgstrCtrl.Country1" name="countrySelect"
+                  ng-options="country1 as country1 for country1 in rgstrCtrl.Country" required>
+                  </select>
+                  <span ng-show="form.$submitted || form.countrySelect.$touched">
+                          <span ng-show="form.countrySelect.$error.required">Pick a country.</span>
+                        </span>
+            </label>
+            <br>
+            <label>City:
+                <input type="text" ng-model="rgstrCtrl.city" name="City" required />
+                <span ng-show="form.$submitted || form.City.$touched">
+                        <span ng-show="form.City.$error.required">Enter your city.</span>
+                      </span>
+              </label>
+              <br>
+              <br>
+              <label>First qestion: Enter your mother first name:
+                </br>
+                  <input type="text" ng-model="rgstrCtrl.answer1" name="answer1" required />
+                  <span ng-show="form.$submitted || form.answer1.$touched">
+                          <span ng-show="form.answer1.$error.required">Enter your first answer.</span>
+                        </span>
+                </label>
+                <br>
+                <label>Second qestion: Enter your father first name:
+                  </br>
+                      <input type="text" ng-model="rgstrCtrl.answer2" name="answer2" required />
+                      <span ng-show="form.$submitted || form.answer2.$touched">
+                              <span ng-show="form.answer2.$error.required">Enter your second answer.</span>
+                            </span>
+                    </label>
+                    <br>
+                    <label>Category:<br>
+                      <label class="container" ng-repeat="category1 in rgstrCtrl.category" name = "categoryList">
+                             <input type="checkbox"  ng-model="category1.checked" data-ng-click="rgstrCtrl.tricky(category1.checked)">{{category1.id}}
+                             <span class="checkmark"></span>
+                             <br>
+                      </label>
+                              <span ng-show="rgstrCtrl.valid">Pick two or more categories Please.</span>
+                            </span>
+                          </br>
+                           
+                  </label>
+                  <br>
+
+                  <label>E-mail:
+                      <input type="email" ng-model="rgstrCtrl.email" name="Email" required />
+                    </label>
+                   
+                    <span ng-show="form.$submitted || form.Email.$touched">
+                      <span ng-show="form.Email.$error.required">Please enter your email.</span>
+                      <span ng-show="form.Email.$error.email">This is not a valid email.</span>
+                    </span>
+                  </br>
+                    <span ng-show="rgstrCtrl.exist">The username is taken.</span>
+                </br>
+                    <input type="submit" ng-click="rgstrCtrl.popUp()" value="Save" ng-disabled="form.$invalid || rgstrCtrl.valid"/>
+
+  </form>
+</div></p>

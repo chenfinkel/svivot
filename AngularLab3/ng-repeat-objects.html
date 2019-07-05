@@ -1,0 +1,44 @@
+<html ng-app="notesApp">
+
+<head>
+    <title>Notes App</title>
+</head>
+
+<body ng-controller="MainCtrl as ctrl">
+    <div ng-repeat="(author, note) in ctrl.notes">
+        <input type="radio" name="name1" value="1" ng-model="model">1
+        {{author}}
+        <input type="radio" name="name2" value="2" ng-model="model">2
+        {{author}}
+        <span class="label">choose:  {{model}}</span>
+
+    </div>
+    <span class="label">choose:  {{model}}</span>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.js">
+    </script>
+    <script type="text/javascript">
+        angular.module('notesApp', [])
+            .controller('MainCtrl', [function () {
+                var self = this;
+                self.notes = {
+                    shyam: {
+                        id: 1,
+                        label: 'First Note',
+                        done: false
+                    },
+                    Misko: {
+                        id: 3,
+                        label: 'Finished Third Note',
+                        done: true
+                    },
+                    brad: {
+                        id: 2,
+                        label: 'Second Note',
+                        done: false
+                    }
+                };
+            }]);
+    </script>
+</body>
+
+</html>
