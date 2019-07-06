@@ -1,4 +1,4 @@
-/////////
+
 angular.module('citiesApp')
     /*.service('setHeadersToken',[ '$http', function ($http) {
 
