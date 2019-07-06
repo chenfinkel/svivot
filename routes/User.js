@@ -83,8 +83,8 @@ router.post('/register', function (req, res) {
 
 
 router.post('/login', function (req, res) {
-    var username = req.body.username;
-    var password = req.body.password;
+    var username = req.query.username;
+    var password = req.query.password;
     var statement = "select * from Users where Username = '" + username + "' and Password = '" + password + "'";
     return DButilsAzure.execQuery(statement).then(function (result) {
         if (result.length > 0) {

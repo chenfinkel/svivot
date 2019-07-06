@@ -1,23 +1,5 @@
 
 angular.module('citiesApp')
-    // .service('myService', function () { this.set = function() {return "hello"} })
-    /*.service('setHeadersToken',[ '$http', function ($http) {
-
-        let token = ""
-
-        this.set = function (t) {
-            token = t
-            $http.defaults.headers.common[ 'x-access-token' ] = t
-            // $httpProvider.defaults.headers.post[ 'x-access-token' ] = token
-            console.log("set")
-
-        }
-
-        this.userName='guest';
-
-    }])*/
-
-    
     .controller('homeController', ['$location','$scope','$http', 'setHeadersToken','localStorageModel', function ($location,$scope, $http, setHeadersToken,localStorageModel) {
 
 
@@ -32,7 +14,7 @@ angular.module('citiesApp')
         self.test={};
         self.Password="";
         self.show=false;
-        self.username = $scope.indxCtrl.userName;
+        self.username = $scope.indxCtrl.username;
         self.lastSaved = function () {
             // register user
             $http({
@@ -124,7 +106,7 @@ angular.module('citiesApp')
                             list[i] = saved[i].PointID;
                         }
                         localStorageModel.updateLocalStorage('listFav',list);
-                        $scope.indxCtrl.fav = list.length;
+                        $scope.indxCtrl.numberOfSaved = list.length;
                     }
                     self.pressCheck();
                 }, function (response) {
@@ -150,7 +132,7 @@ angular.module('citiesApp')
                 }
             }
             localStorageModel.updateLocalStorage('listFav',list2);
-            $scope.indxCtrl.fav--;
+            $scope.indxCtrl.numberOfSaved--;
             $http({
                 url:self.serverUrl + "Poi/userPOI",
                 method:"DELETE",
@@ -161,7 +143,7 @@ angular.module('citiesApp')
                         pointID:type[index].point.PointID}
             }).then(function (response) {})
         } else {
-            $scope.indxCtrl.fav++;
+            $scope.indxCtrl.numberOfSaved++;
             $http({
                 url:self.serverUrl + "Poi/savePoint",
                 method:"POST",
@@ -397,7 +379,7 @@ angular.module('citiesApp')
          userRank:""
      };
      $scope.addR=function(){
-        var userName=$scope.indxCtrl.userName;
+        var userName=$scope.indxCtrl.username;
         var mypoiid = self.currentPOI.PoiId;
         if(self.newReview.userReview!=""){
             if(self.newReview.userReview != null){
@@ -637,7 +619,7 @@ angular.module('citiesApp')
      };
 
      $scope.addR2=function(){
-        var userName2=$scope.indxCtrl.userName;
+        var userName2=$scope.indxCtrl.username;
         var mypoiid2 = self.currentPOI2.PoiId;
         if(self.newReview2.userReview!=""){
             if(self.newReview2.userReview != null){

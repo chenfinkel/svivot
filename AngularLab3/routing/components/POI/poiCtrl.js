@@ -10,7 +10,7 @@ angular.module('citiesApp')
     self.favorites=[];
 
     var token1 =localStorageModel.getLocalStorage('token');
-    var userName1 = $scope.indxCtrl.userName;
+    var userName1 = $scope.indxCtrl.username;
     self.packet={
         userName:userName1,
         token:token1
@@ -409,7 +409,7 @@ angular.module('citiesApp')
           userRank:""
       };
       $scope.addR=function(){
-         var userName=$scope.indxCtrl.userName;
+         var userName=$scope.indxCtrl.username;
          var mypoiid = self.currentPOI.PoiId;
          if(self.newReview.userReview!=""){
              if(self.newReview.userReview != null){

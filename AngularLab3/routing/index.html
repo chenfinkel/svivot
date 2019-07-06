@@ -329,17 +329,15 @@ h5 {
         <body>
 
             <ul>
-                <li ng-disabled="indxCtrl.showFav"><a href="#/favorite" ><img ng-src="star.jpg" height="40" ng-show="indxCtrl.showFav"> <span ng-show="indxCtrl.showFav">{{indxCtrl.fav}}</span></a></li>
+                <li ng-disabled="indxCtrl.showSavedIcon"><a href="#/favorite" ><img ng-src="star.jpg" height="40" ng-show="indxCtrl.showSavedIcon"> <span ng-show="indxCtrl.showSavedIcon">{{indxCtrl.numberOfSaved}}</span></a></li>
                 <li ng-repeat="header in indxCtrl.headers"><a href="{{header.hashbang}}" > <span class="myT">{{header.value}}</span></a></li>
 
-              <span class="myT" ng-model="indxCtrl.userName">hello {{indxCtrl.userName}}</span>
+              <span class="myT" ng-model="indxCtrl.userName">hello {{indxCtrl.username}}</span>
             </ul>
             
         <br>
         <br>
         <div ng-view></div>
-
-       <!-- <img ng-src="http://2.bp.blogspot.com/-1D3ZYnPFJZE/VM0PgrciaJI/AAAAAAAAIl0/qYQXEOcRYr4/s1600/Free%2BAngularJS%2BEbooks.png" height="150px">-->
 
 
     </div>

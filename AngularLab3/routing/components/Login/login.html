@@ -1,58 +1,58 @@
+<p><span id="abdror" data-shadow-text="Text-Shadow">Prague Advisor- best POI management application</span></p>
 
-        <p><span id="abdror"data-shadow-text="Text-Shadow">Prague Advisor- best POI management application</span></p>
-        
-        <p><span class="myT">please log in</span></p>
-        <p>
-                        <form name="form" novalidate>
-                            <label><span class="myT2">Username:</span>
-                              <input type="text" ng-model="lgnCtrl.userName" name="username" required />
-                              <span ng-show="form.$submitted || form.username.$touched">
-                                    <span ng-show="form.username.$error.required">Enter your Username.</span>
-                                  </span>
-                            </label>
-                            <br/>
-                            <label><span class="myT2">Password:</span>
-                                <input type="password" ng-model="lgnCtrl.Password" name="Password" required />
-                                <span ng-show="form.$submitted || form.Password.$touched">
-                                        <span ng-show="form.Password.$error.required">Enter your Password.</span>
-                                      </span>
-                              </label>
-                            <br />
-                            <label>
-                                <span ng-show="lgnCtrl.notSuccess">Wrong parameters.</span>
-                              </label>
-                        </br>
-                            <input type="submit" ng-click="lgnCtrl.popUp()" value="Login" ng-disabled="form.$invalid "/>
-                            <input type="submit" ng-click="lgnCtrl.registerSend()" value="Move to Register Page"/>
-                            <input type="submit" ng-click="lgnCtrl.passwordSend()" value="Forgot Password?"/>
-                          </form>
-                          
-                
-                          <p><span class="myT">3 Suggested Points Of Interest</span></p>
-                          <table ng-style="{'align': 'center', 'width': '80%', 'dir': 'ltr'}">
-                            <tr ng-style="{'bgcolor': '#669900'}">
-                                <td ng-style="{'width': '40%'}"><span class="myT2">Point Of Interest</span></td>
-                                <td ng-style="{'width': '40%'}"><span class="myT2">Point Of Interest Picture</span></td>
-                            </tr>
-                        
-                            <tr ng-style="{'bgcolor': '#669900'}" ng-repeat="popular in lgnCtrl.threePopular">
-                                <td ng-style="{'width': '40%'}"  ng-click="btnclick(popular.id)">
-                                    <span class="myT2">{{popular.point.Name}}</span>
-                                </td>
-                                
-                                <td ng-style="{'width': '40%'}"  ng-click="btnclick(popular.id)">
-                                    <img ng-style="{'height': '100px', 'width': '100px', 'cursor': 'pointer'}" ng-src="{{popular.point.imagePath}} ">
-                                </td>
-                            </tr>
-                    </table>
-        </p>
+<p><span class="myT">please log in</span></p>
+<p>
+        <form name="form" novalidate>
+                <label><span class="myT2">Username:</span>
+                        <input type="text" ng-model="lgnCtrl.username" name="username" required />
+                        <span ng-show="form.$submitted || form.username.$touched">
+                                <span ng-show="form.username.$error.required">Enter your Username.</span>
+                        </span>
+                </label>
+                <br />
+                <label><span class="myT2">Password:</span>
+                        <input type="password" ng-model="lgnCtrl.Password" name="Password" required />
+                        <span ng-show="form.$submitted || form.Password.$touched">
+                                <span ng-show="form.Password.$error.required">Enter your Password.</span>
+                        </span>
+                </label>
+                <br />
+                <label>
+                        <span ng-show="lgnCtrl.success=='false'">Wrong parameters.</span>
+                </label>
+                </br>
+                <input type="submit" ng-click="lgnCtrl.login()" value="Login" ng-disabled="form.$invalid " />
+                <input type="submit" ng-click="lgnCtrl.goToRegister()" value="Move to Register Page" />
+                <input type="submit" ng-click="lgnCtrl.goToRestorePass()" value="Forgot Password?" />
+        </form>
 
 
+        <p><span class="myT">3 Suggested Points Of Interest</span></p>
+        <table ng-style="{'align': 'center', 'width': '80%', 'dir': 'ltr'}">
+                <tr ng-style="{'bgcolor': '#669900'}">
+                        <td ng-style="{'width': '40%'}"><span class="myT2">Point Of Interest</span></td>
+                        <td ng-style="{'width': '40%'}"><span class="myT2">Point Of Interest Picture</span></td>
+                </tr>
+
+                <tr ng-style="{'bgcolor': '#669900'}" ng-repeat="popular in lgnCtrl.threePopular">
+                        <td ng-style="{'width': '40%'}" ng-click="btnclick(popular.id)">
+                                <span class="myT2">{{popular.point.Name}}</span>
+                        </td>
+
+                        <td ng-style="{'width': '40%'}" ng-click="btnclick(popular.id)">
+                                <img ng-style="{'height': '100px', 'width': '100px', 'cursor': 'pointer'}"
+                                        ng-src="{{popular.point.imagePath}} ">
+                        </td>
+                </tr>
+        </table>
+</p>
 
 
 
 
-    <div id="myModal" class="modal">
+
+
+<div id="myModal" class="modal">
 
         <!-- Modal content -->
         <div class="modal-content">
@@ -68,11 +68,12 @@
                         </tr>
                         <tr ng-style="{'bgcolor': '#669900'}">
                                 <td ng-style="{'width': '40%'}">
-                                        <img ng-style="{'height': '200px', 'width': '200px'}" ng-src="{{lgnCtrl.currentPOI.imagePath}} " >
+                                        <img ng-style="{'height': '200px', 'width': '200px'}"
+                                                ng-src="{{lgnCtrl.currentPOI.imagePath}} ">
                                 </td>
                                 <td ng-style="{'width': '20%'}">
                                         <span class="myT2"><span ng-bind="lgnCtrl.currentPOI.Views"></span></span>
-                                </td> 
+                                </td>
                                 <td ng-style="{'width': '20%'}">
                                         <span class="myT2"><span ng-bind="lgnCtrl.currentPOIrank">%</span></span>
                                 </td>
@@ -84,26 +85,33 @@
                 <br>
                 <br>
                 <br>
-                <table  ng-style="{'align': 'center', 'width': '100%', 'dir': 'ltr'}">
+                <table ng-style="{'align': 'center', 'width': '100%', 'dir': 'ltr'}">
                         <tr ng-style="{'bgcolor': '#669900'}">
                                 <td ng-style="{'width': '50%'}">
                                         <table ng-style="{'align': 'center', 'width': '100%', 'dir': 'ltr'}">
                                                 <tr ng-style="{'bgcolor': '#669900'}">
-                                                        <td ng-style="{'width': '100%'}"><span class="myT">Add New Review</span></td>  
+                                                        <td ng-style="{'width': '100%'}"><span class="myT">Add New
+                                                                        Review</span></td>
                                                 </tr>
                                                 <tr ng-style="{'bgcolor': '#669900'}">
                                                         <td ng-style="{'width': '100%'}">
                                                                 <form name="form1" novalidate>
                                                                         <label>Review Description:
-                                                                                <input type="text" name="RD" ng-model="lgnCtrl.newReview.userReview" required />
-                                                                        </label>
-                                                                        <br/>
-                                                                        <label>Rank:
-                                                                                <input type="text" ng-model="lgnCtrl.newReview.userRank" name="rank" required />
+                                                                                <input type="text" name="RD"
+                                                                                        ng-model="lgnCtrl.newReview.userReview"
+                                                                                        required />
                                                                         </label>
                                                                         <br />
-                                                                        <input type="submit" value="Add" ng-disabled="lgnCtrl.disableButton" ng-click="addR()"/>
-                                                                        
+                                                                        <label>Rank:
+                                                                                <input type="text"
+                                                                                        ng-model="lgnCtrl.newReview.userRank"
+                                                                                        name="rank" required />
+                                                                        </label>
+                                                                        <br />
+                                                                        <input type="submit" value="Add"
+                                                                                ng-disabled="lgnCtrl.disableButton"
+                                                                                ng-click="addR()" />
+
                                                                 </form>
                                                         </td>
                                                 </tr>
@@ -116,7 +124,8 @@
 
                                         <table ng-style="{'align': 'center', 'width': '100%', 'dir': 'ltr'}">
                                                 <tr ng-style="{'bgcolor': '#669900'}">
-                                                        <td ng-style="{'width': '100%'}"><span class="myT">Two Last Review</span></td>  
+                                                        <td ng-style="{'width': '100%'}"><span class="myT">Two Last
+                                                                        Review</span></td>
                                                 </tr>
 
                                                 <tr ng-style="{'bgcolor': '#669900'}" ng-repeat="R in lgnCtrl.reviews">
@@ -127,27 +136,15 @@
                                                                         {{R.DateSubmitted}}
                                                                         <br>
                                                                         {{R.Review}}
-                                                                        <!--<span ng-bind="R.myD"></span>--></span>
+                                                                </span>
                                                         </td>
-                                                </tr> 
-
-
-                                                <!--<tr ng-style="{'bgcolor': '#669900'}">
-                                                        <td ng-style="{'width': '100%'}">
-                                                                <span class="myT2"><span>Review 1</span></span>
-                                                        </td>    
                                                 </tr>
-                                                <tr ng-style="{'bgcolor': '#669900'}">
-                                                        <td ng-style="{'width': '100%'}">
-                                                                <span class="myT2"><span>Review 2</span></span>
-                                                        </td>    
-                                                </tr>-->
 
                                         </table>
 
-                                </td>     
-                        </tr> 
+                                </td>
+                        </tr>
                 </table>
         </div>
-              
+
 </div>

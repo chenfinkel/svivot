@@ -3,12 +3,13 @@ angular.module('citiesApp')
 
 
         self = this;
-        self.userName = setHeadersToken.userName;
-        self.showFav=false;
-        self.fav=0;
+        self.username = setHeadersToken.userName;
+        self.showSavedIcon = false;
+        self.numberOfSaved = 0;
         self.headers = [
             {hashbang:"#/login",value:"Login"},
             {hashbang:"#/register",value:"Register"},
             {hashbang:"#/poi",value:"POI"},
             {hashbang:"#/about",value:"About"}];
+        
     }]);

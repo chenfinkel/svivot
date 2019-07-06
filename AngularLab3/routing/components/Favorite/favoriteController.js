@@ -1,6 +1,6 @@
 angular.module('citiesApp')
 .controller('favoriteController', ['$location','$scope','$http', 'setHeadersToken','localStorageModel', function ($location,$scope, $http, setHeadersToken,localStorageModel) {
-  if(!$scope.indxCtrl.showFav)
+  if(!$scope.indxCtrl.showSavedIcon)
   {
     $location.path('/login');
   }
@@ -25,7 +25,7 @@ angular.module('citiesApp')
   }
 
   var token1 =localStorageModel.getLocalStorage('token');
-  var userName1 = $scope.indxCtrl.userName;
+  var userName1 = $scope.indxCtrl.username;
   self.packet={
       userName:userName1,
       token:token1
@@ -437,7 +437,7 @@ self.orderPoi=function (poiid,text)
         var params = {
             token:localStorageModel.getLocalStorage('token'),
             PoiId:list[i],
-            userName:$scope.indxCtrl.userName
+            userName:$scope.indxCtrl.username
         }
         $http.post(self.serverUrl + "Poi/poitouser", params)
         .then(function (response) {
@@ -688,7 +688,7 @@ self.orderPoi=function (poiid,text)
        userRank:""
    };
    $scope.addR=function(){
-      var userName=$scope.indxCtrl.userName;
+      var userName=$scope.indxCtrl.username;
       var mypoiid = self.currentPOI.PoiId;
       if(self.newReview.userReview!=""){
           if(self.newReview.userReview != null){

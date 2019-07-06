@@ -323,8 +323,6 @@ router.get('/popular', function (req, res) {
 
 router.get('/twopopular', function (req, res) {
     var username = req.query.username;
-    console.log("Poi line 326 method twopopular, username is: " + username);
-    console.log("token is :" + req.decoded.payload.userName);
     if (username == req.decoded.payload.userName) {
         var statement = "select Museums,Nature,Food,NightLife from Users where Username ='" + username + "'";
         DButilsAzure.execQuery(statement).then(function (result) {
