@@ -1,317 +1,340 @@
-
 <html ng-app="citiesApp">
-    <head><title>Cities App</title>
-        <style>
 
-            body{
-                background-color: rgb(220,255,255);
-            }
-            .switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-  }
-  
-  /* Hide default HTML checkbox */
-  .switch input {display:none;}
-  
-  /* The slider */
-  .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    -webkit-transition: .4s;
-    transition: .4s;
-  }
-  
-  .slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-  }
-  
-  input:checked + .slider {
-    background-color: #2196F3;
-  }
-  
-  input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
-  }
-  
-  input:checked + .slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
-  }
-  
-  /* Rounded sliders */
-  .slider.round {
-    border-radius: 34px;
-  }
-  
-  .slider.round:before {
-    border-radius: 50%;
-  }
+<head>
+    <title>Cities App</title>
+    <style>
+        body {
+            background-color: rgb(220, 255, 255);
+        }
 
-  ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
-}
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
 
-li {
-    float: left;
-}
+        /* Hide default HTML checkbox */
+        .switch input {
+            display: none;
+        }
 
-li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-}
+        /* The slider */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
 
-li a:hover {
-    background-color: #111;
-}
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
 
-ul span {
-    float: right;
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-}
-table {
-    border-collapse: collapse;
-    width: 100%;
-}
+        input:checked+.slider {
+            background-color: #2196F3;
+        }
 
-th, td {
-    padding: 8px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
+        input:focus+.slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
 
-.myT{
-    font-size: 30px;
-    font-family: Arial, Helvetica, sans-serif;
-}
-.myT2{
-    font-size: 20px;
-    font-family: Arial, Helvetica, sans-serif;
-}
-.myT3{
-    font-size: 35px;
-    font-family: Arial, Helvetica, sans-serif;
-}
-.myTabout{
-    font-size: 20px;
-    font-family: Arial, Helvetica, sans-serif;
-}
+        input:checked+.slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
 
-input[type=text], select {
-    width: 50%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
 
-input[type=password], select {
-    width: 50%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
+        .slider.round:before {
+            border-radius: 50%;
+        }
 
-input[type=email], select {
-    width: 50%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
 
-input[type=submit] {
-    width: 50%;
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
+        li {
+            float: left;
+        }
 
-input[type=submit]:hover {
-    background-color: #45a049;
-}
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
 
-.reg{
-    
-    border-radius: 5px;
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: #CCFFCC;
-    padding: 20px;
-    font-size: 18px;
-}
+        li a:hover {
+            background-color: #111;
+        }
 
-.container {
-    display: block;
-    position: relative;
-    padding-left: 35px;
-    margin-bottom: 12px;
-    cursor: pointer;
-    font-size: 15px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
+        ul span {
+            float: right;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
 
-/* Hide the browser's default checkbox */
-.container input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-}
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
 
-/* Create a custom checkbox */
-.checkmark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 25px;
-    width: 25px;
-    background-color: #eee;
-}
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
 
-/* On mouse-over, add a grey background color */
-.container:hover input ~ .checkmark {
-    background-color: #ccc;
-}
+        .myT {
+            font-size: 30px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-/* When the checkbox is checked, add a blue background */
-.container input:checked ~ .checkmark {
-    background-color: #2196F3;
-}
+        .myT2 {
+            font-size: 20px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-/* Create the checkmark/indicator (hidden when not checked) */
-.checkmark:after {
-    content: "";
-    position: absolute;
-    display: none;
-}
+        .myT3 {
+            font-size: 35px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-/* Show the checkmark when checked */
-.container input:checked ~ .checkmark:after {
-    display: block;
-}
+        .myTabout {
+            font-size: 20px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-/* Style the checkmark/indicator */
-.container .checkmark:after {
-    left: 9px;
-    top: 5px;
-    width: 5px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 3px 3px 0;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
-}
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
+        input[type=text],
+        select {
+            width: 50%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
 
-/* Modal Content */
-.modal-content {
-    background-color: #fefefe;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-}
+        input[type=password],
+        select {
+            width: 50%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
 
-/* The Close Button */
-.close {
-    color: #aaaaaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
+        input[type=email],
+        select {
+            width: 50%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
 
-.close:hover,
-.close:focus {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer;
-}
-h5 {
-    font: 600 1.5em/1 'Raleway', sans-serif;
-    color: rgba(0,0,0,.5);
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: .5em;
-    position: absolute;
-    
-    width: 100%;
-}
+        input[type=submit] {
+            width: 50%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
 
-#drorA{
-    height: 500px;
-    top: 500px;
-}
+        input[type=submit]:hover {
+            background-color: #45a049;
+        }
 
-#abdror, #abdror:after {
-    font-weight: 900;
-    color: #efedce;
-    white-space: nowrap;
-    display: inline-block;
-    position: relative;
-    letter-spacing: .1em;
-    padding: .2em 0 .25em 0;
-}
+        .reg {
 
-#abdror {
-    font-size: 4em;
-    
-    text-shadow: .04em .04em 0 #9cb8b3;
-}
+            border-radius: 5px;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #CCFFCC;
+            padding: 20px;
+            font-size: 18px;
+        }
 
-/*#abdror:after {
+        .container {
+            display: block;
+            position: relative;
+            padding-left: 35px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            font-size: 15px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* Hide the browser's default checkbox */
+        .container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        /* Create a custom checkbox */
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 25px;
+            width: 25px;
+            background-color: #eee;
+        }
+
+        /* On mouse-over, add a grey background color */
+        .container:hover input~.checkmark {
+            background-color: #ccc;
+        }
+
+        /* When the checkbox is checked, add a blue background */
+        .container input:checked~.checkmark {
+            background-color: #2196F3;
+        }
+
+        /* Create the checkmark/indicator (hidden when not checked) */
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        /* Show the checkmark when checked */
+        .container input:checked~.checkmark:after {
+            display: block;
+        }
+
+        /* Style the checkmark/indicator */
+        .container .checkmark:after {
+            left: 9px;
+            top: 5px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            padding-top: 100px;
+            /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        h5 {
+            font: 600 1.5em/1 'Raleway', sans-serif;
+            color: rgba(0, 0, 0, .5);
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: .5em;
+            position: absolute;
+
+            width: 100%;
+        }
+
+        #drorA {
+            height: 500px;
+            top: 500px;
+        }
+
+        #abdror,
+        #abdror:after {
+            font-weight: 900;
+            color: #efedce;
+            white-space: nowrap;
+            display: inline-block;
+            position: relative;
+            letter-spacing: .1em;
+            padding: .2em 0 .25em 0;
+        }
+
+        #abdror {
+            font-size: 4em;
+
+            text-shadow: .04em .04em 0 #9cb8b3;
+        }
+
+        /*#abdror:after {
     content: attr(data-shadow-text);
     color: rgba(0,0,0,.35);
     text-shadow: none;
@@ -321,45 +344,142 @@ h5 {
     
     -webkit-mask-image: url(https://f.cl.ly/items/1t1C0W3y040g1J172r3h/mask.png);
 }*/
-
     </style>
-    </head>
-    <body ng-controller="indexController as indxCtrl">
-     
-        <body>
+</head>
 
-            <ul>
-                <li ng-disabled="indxCtrl.showSavedIcon"><a href="#/favorite" ><img ng-src="star.jpg" height="40" ng-show="indxCtrl.showSavedIcon"> <span ng-show="indxCtrl.showSavedIcon">{{indxCtrl.numberOfSaved}}</span></a></li>
-                <li ng-repeat="header in indxCtrl.headers"><a href="{{header.hashbang}}" > <span class="myT">{{header.value}}</span></a></li>
+<body ng-controller="indexController as indxCtrl">
 
-              <span class="myT" ng-model="indxCtrl.userName">hello {{indxCtrl.username}}</span>
-            </ul>
-            
+    <div>
+
+        <ul>
+            <li ng-disabled="indxCtrl.showSavedIcon"><a href="#/favorite"><img ng-src="star.jpg" height="40"
+                        ng-show="indxCtrl.showSavedIcon"> <span
+                        ng-show="indxCtrl.showSavedIcon">{{indxCtrl.numberOfSaved}}</span></a></li>
+            <li ng-repeat="header in indxCtrl.headers"><a href="{{header.hashbang}}"> <span
+                        class="myT">{{header.value}}</span></a></li>
+
+            <span class="myT" ng-model="indxCtrl.username">hello {{indxCtrl.username}}</span>
+        </ul>
+
         <br>
         <br>
         <div ng-view></div>
 
+        <div id="myModal" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+                    <span class="close" ng-click="spanclick()">&times;</span>
+                    <p><span class="myT"><span ng-bind="indxCtrl.currPoint.Title"></span></span></p>
+    
+                    <table ng-style="{'align': 'center', 'width': '100%', 'dir': 'ltr'}">
+                            <tr ng-style="{'bgcolor': '#669900'}">
+                                    <td ng-style="{'width': '40%'}"><span class="myT">Picture</span></td>
+                                    <td ng-style="{'width': '20%'}"><span class="myT">Views</span></td>
+                                    <td ng-style="{'width': '20%'}"><span class="myT">Rank</span></td>
+                                    <td ng-style="{'width': '20%'}"><span class="myT">Description</span></td>
+                            </tr>
+                            <tr ng-style="{'bgcolor': '#669900'}">
+                                    <td ng-style="{'width': '40%'}">
+                                            <img ng-style="{'height': '200px', 'width': '200px'}"
+                                                    ng-src="{{indxCtrl.currPoint.imagePath}} ">
+                                    </td>
+                                    <td ng-style="{'width': '20%'}">
+                                            <span class="myT2"><span ng-bind="indxCtrl.currPoint.Views"></span></span>
+                                    </td>
+                                    <td ng-style="{'width': '20%'}">
+                                            <span class="myT2"><span ng-bind="indxCtrl.pointRank">%</span></span>
+                                    </td>
+                                    <td ng-style="{'width': '20%'}">
+                                            <span class="myT2"><span ng-bind="indxCtrl.currPoint.Description"></span></span>
+                                    </td>
+                            </tr>
+                    </table>
+                    <br>
+                    <br>
+                    <br>
+                    <table ng-style="{'align': 'center', 'width': '100%', 'dir': 'ltr'}">
+                            <tr ng-style="{'bgcolor': '#669900'}">
+                                    <td ng-show="indxCtrl.loggedIn" ng-style="{'width': '50%'}">
+                                            <table ng-style="{'align': 'center', 'width': '100%', 'dir': 'ltr'}">
+                                                    <tr ng-style="{'bgcolor': '#669900'}">
+                                                            <td ng-style="{'width': '100%'}"><span class="myT">Add New
+                                                                            Review</span></td>
+                                                    </tr>
+                                                    <tr ng-style="{'bgcolor': '#669900'}">
+                                                            <td ng-style="{'width': '100%'}">
+                                                                    <form name="form1" novalidate>
+                                                                            <label>Review Description:
+                                                                                    <input type="text" name="RD"
+                                                                                            ng-model="indxCtrl.newReview.userReview"
+                                                                                            required />
+                                                                            </label>
+                                                                            <br />
+                                                                            <label>Rank:
+                                                                                    <input type="text"
+                                                                                            ng-model="indxCtrl.newReview.userRank"
+                                                                                            name="rank" required />
+                                                                            </label>
+                                                                            <br />
+                                                                            <input type="submit" value="Add"
+                                                                                    ng-disabled="indxCtrl.disableButton"
+                                                                                    ng-click="addR()" />
+    
+                                                                    </form>
+                                                            </td>
+                                                    </tr>
+                                            </table>
+                                    </td>
+    
+    
+    
+                                    <td ng-style="{'width': '50%'}">
+    
+                                            <table ng-style="{'align': 'center', 'width': '100%', 'dir': 'ltr'}">
+                                                    <tr ng-style="{'bgcolor': '#669900'}">
+                                                            <td ng-style="{'width': '100%'}"><span class="myT">Two Last
+                                                                            Review</span></td>
+                                                    </tr>
+    
+                                                    <tr ng-style="{'bgcolor': '#669900'}" ng-repeat="R in indxCtrl.reviews">
+                                                            <td ng-style="{'width': '100%'}">
+                                                                    <span class="myT2">
+                                                                            {{R.SubmittedBy}}
+                                                                            <br>
+                                                                            {{R.DateSubmitted}}
+                                                                            <br>
+                                                                            {{R.Review}}
+                                                                    </span>
+                                                            </td>
+                                                    </tr>
+    
+                                            </table>
+    
+                                    </td>
+                            </tr>
+                    </table>
+            </div>
+    
+    </div>
+
 
     </div>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-        <script src="node_modules/angular-local-storage/dist/angular-local-storage.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>       
-        <script src="app.js" ></script>
-        <script src="indexController.js" ></script>
-        <script src="components/About/aboutController.js" ></script>
-        <script src="components/POI/poiCtrl.js" ></script>
-        <script src="components/Login/loginController.js" ></script>
-        <script src="components/Home/homeController.js" ></script>
-        <script src="components/Favorite/favoriteController.js" ></script>
-        <script src="components/Password/passwordController.js" ></script>
-        <script src="components/Register/registerController.js" ></script>
-        <script src="components/Services/serviceController.js" ></script>
-        <script src="components/Services/localStorageModel.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="node_modules/angular-local-storage/dist/angular-local-storage.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
+    <script src="app.js"></script>
+    <script src="indexController.js"></script>
+    <script src="components/About/aboutController.js"></script>
+    <script src="components/POI/poiCtrl.js"></script>
+    <script src="components/Login/loginController.js"></script>
+    <script src="components/Home/homeController.js"></script>
+    <script src="components/Favorite/favoriteController.js"></script>
+    <script src="components/Password/passwordController.js"></script>
+    <script src="components/Register/registerController.js"></script>
+    <script src="components/Services/serviceController.js"></script>
+    <script src="components/Services/localStorageModel.js"></script>
 
-    </body>
-    </html>
-    
-    
+</body>
 
-    
+</html>
