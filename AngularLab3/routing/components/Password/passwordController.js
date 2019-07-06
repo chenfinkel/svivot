@@ -23,51 +23,53 @@ angular.module('citiesApp')
 
 
         self = this;
-        self.serverUrl = 'http://localhost:4000/';
+        self.serverUrl = 'http://localhost:3000/';
         self.wrongUser=false;
         self.wrongAnswers=false;
         self.wrongParameters=false;
         self.Password="";
         self.show=false;
-
-        self.username ={
-            userName:"4"
-        }
-        
-        self.Answers={
-            answer1: "",
-            answer2: ""
-        }
+        self.username = "";
+        self.answer = "";
+        self.index = 1;
+        self.question = "";
+        self.questions = ["What is your mother's pre-marriage last name?",
+                          "What city were you born in?"];
 
         self.popUp = function ()
         {
-            self.username.userName= self.userName;
-            self.answers();
+            for (i = 0; i < 2; i++){
+                if (self.question == self.questions[i]){
+                    self.index = i+1;
+                }
+            }
+            self.username = self.userName;
+            //self.answers();
             self.getPassword();
 
         }
 
         self.getPassword = function () {
-            $http.post(self.serverUrl + "User/password", self.username)
-                .then(function (response) {
-                    //First function handles success
-                    //self.message=response.data.message;
-                    if(response.data.message)
-                    {
-                        self.show=false;
-                        self.wrongParameters=true;
-                    }
-                    else
-                    {
-                    }
-                    self.Password=response.data.password;
+            $http({
+                url:self.serverUrl + "User/password",
+                method:"POST",
+                params:{
+                    username: self.username,
+                    answer: self.answer,
+                    index: self.index
+                }
+            }).then(function (response) {
+                    self.show=true;
+                    self.wrongParameters=false;
+                    self.Password = response.data.result;
                 }, function (response) {
-                    //Second function handles error
-                    self.login.content = "Something went wrong";
+                    self.show=false;
+                    self.wrongParameters=true;
+                    //self.login.content = response.data;
                 });
         }
 
-        self.answers = function () {
+        /*self.answers = function () {
             // register user
             $http.post(self.serverUrl + "User/securityAnswers", self.username)
                 .then(function (response) {
@@ -98,7 +100,7 @@ angular.module('citiesApp')
                     //Second function handles error
                     self.login.content = "Something went wrong";
                 });
-        }
+        }*/
 
 
     }]);

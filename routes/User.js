@@ -26,23 +26,13 @@ var secret = "YCsecret";
  */
 
 router.get('/countries', function (req, res) {
-    /*fs.readFile('./countries.xml', function (err, data) {
-        var json = parser.toJson(data);
-        var splitJson = json.split("\"");
-        var idx = 0;
-        for (var i = 11; i <= splitJson.length; i = i + 8) {
-            countriesArr[idx] = splitJson[i];
-            idx++;
-        }
-        console.log(countriesArr);*/
         JSON
         res.status(200).json({ countries: app.getCountries() });
-    //});
 });
 
 router.post('/register', function (req, res) {
-    var username = req.body.username;
-    var Password = req.body.Password;
+    var username = req.query.username;
+    var Password = req.query.Password;
     var error = false;
     var errors = [];
     if (username.length < 3 || username.length > 8) {
@@ -54,23 +44,23 @@ router.post('/register', function (req, res) {
         error = true;
     }
     if (!error) {
-        var statement = "select * from Users where UserName = '" + username + "'";
+        var statement = "select * from Users where Username = '" + username + "'";
         DButilsAzure.execQuery(statement).then(function (result) {
             if (result.length == 0) {
-                var Country = req.body.Country;
+                var Country = req.query.Country;
                 if (app.getCountries().indexOf(Country) < 0) {
                     res.status(400).json({ error: ["Country is not valid"] });
                 } else {
-                var Firstname = req.body.Firstname;
-                var Lastname = req.body.Lastname;
-                var City = req.body.City;    
-                var Email = req.body.Email;
-                var Answer1 = req.body.Answer1;
-                var Answer2 = req.body.Answer2;
-                var Museums = req.body.Museums;
-                var Nature = req.body.Nature;
-                var Food = req.body.Food;
-                var NightLife = req.body.NightLife;
+                var Firstname = req.query.Firstname;
+                var Lastname = req.query.Lastname;
+                var City = req.query.City;    
+                var Email = req.query.Email;
+                var Answer1 = req.query.Answer1;
+                var Answer2 = req.query.Answer2;
+                var Museums = req.query.Museums;
+                var Nature = req.query.Nature;
+                var Food = req.query.Food;
+                var NightLife = req.query.NightLife;
                 var statement2 = "Insert Into Users (Username, Password, FirstName, LastName, City, Country, Email, Answer1, Answer2, Museums, Nature, Food, NightLife) Values ('" + username + "','" + Password + "','" + Firstname + "','" + Lastname + "','" + City + "','" + Country + "','" + Email + "','" + Answer1 + "','" + Answer2 + "'," + Museums + "," + Nature + "," + Food + "," + NightLife + ")";
                 DButilsAzure.execQuery(statement2).then(function (result) {
                     JSON
@@ -115,14 +105,19 @@ router.post('/login', function (req, res) {
 
 
 router.post('/password', function (req, res) {
-    var username = req.body.userName;
-    var answer = req.body.answer;
-    var questionIndex = req.body.index;
-    var statement = "select Password from Users where Username = '" + username + "'";
+    var username = req.query.username;
+    var answer = req.query.answer;
+    var questionIndex = req.query.index;
+    var statement = "select * from Users where Username = '" + username + "'";
     DButilsAzure.execQuery(statement).then(function (result) {
         if (result.length > 0) {
-            if (questionIndex == 1 && answer.localecompare(result[0].Answer1) ||
-                questionIndex == 2 && answer.localecompare(result[0].Answer2)) {
+            console.log("Answer1 is: " + result[0].Answer1);
+            console.log("Answer2 is: " + result[0].Answer2);
+            console.log("User answer is: " + answer);
+            console.log("Question index is: " + questionIndex);
+            console.log("Username is: " + username);
+            if (questionIndex == 1 && answer == result[0].Answer1 ||
+                questionIndex == 2 && answer == result[0].Answer2) {
                 res.status(200).json({ result: result[0].Password });
             } else {
                 res.status(400).send("Answer not correct");
@@ -131,6 +126,7 @@ router.post('/password', function (req, res) {
             res.status(400).send("User does not exist");
         }
     }).catch(function (result) {
+        console.log("Error !!! " + result);
         res.status(400).send(result);
     })
 });

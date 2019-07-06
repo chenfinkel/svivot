@@ -28,23 +28,23 @@ angular.module('citiesApp')
         self.countChecked=0;
         self.valid=true;
         self.user = {
-            userName: "guest",
+            username: "guest",
             Password: "abcd",
             Fname:"a",
             Lname:"b",
             Country:"c",
             City:"d",
-            restaurant:"e",
-            meuseum:"f",
-            shopping:"g",
-            Answer1:"h",
-            Answer2:"i",
-            viewPoint:"j",
+            museums:"e",
+            nature:"f",
+            food:"g",
+            nightlife: "h",
+            Answer1:"i",
+            Answer2:"j",
             mail:"k"
         }
         self.checkBoxFirst=true;
         self.Country = [];
-        self.serverUrl = 'http://localhost:4000/'
+        self.serverUrl = 'http://localhost:3000/'
         self.getCountry = function (){
             $http.get(self.serverUrl + "User/countries")
                 .then(function (response) {
@@ -82,7 +82,7 @@ angular.module('citiesApp')
             }
         }
         self.popUp = function (){
-             self.user.userName= self.userName;
+             self.user.username= self.userName;
              self.user.Password= self.Password;
              self.user.Fname=self.Fname;
              self.user.Lname=self.Lname;
@@ -120,14 +120,32 @@ angular.module('citiesApp')
         self.signUp = function () {
             self.exist = true;
             // register user
-            $http.post(self.serverUrl + "User/register", self.user)
+            $http({
+                url:self.serverUrl + "User/register",
+                method:"POST",
+                params:{
+                    username: self.user.username,
+                    Password: self.user.Password,
+                    Firstname: self.user.Fname,
+                    Lastname: self.user.Lname,
+                    Country: self.user.Country,
+                    City: self.user.City,
+                    Answer1: self.user.Answer1,
+                    Answer2: self.user.Answer2,
+                    Email: self.user.mail,
+                    Museums: self.user.museums,
+                    Nature: self.user.nature,
+                    Food: self.user.food,
+                    NightLife: self.user.nightlife
+                }
+            })
                 .then(function (response) {
                     self.signUp.content = response.data;
                     $location.path('/login');
                 }, function (response) {
                     //Second function handles error
                     self.signUp.content = "";
-                    errors = response.error;
+                    errors = response.data.error;
                     for (i = 0; i < errors.length; i++){
                         if (errors[i] == "Username is taken"){
                             self.exist = false;

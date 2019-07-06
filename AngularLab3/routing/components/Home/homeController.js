@@ -1,7 +1,7 @@
-///////
+
 angular.module('citiesApp')
     // .service('myService', function () { this.set = function() {return "hello"} })
-    .service('setHeadersToken',[ '$http', function ($http) {
+    /*.service('setHeadersToken',[ '$http', function ($http) {
 
         let token = ""
 
@@ -15,7 +15,7 @@ angular.module('citiesApp')
 
         this.userName='guest';
 
-    }])
+    }])*/
 
     
     .controller('homeController', ['$location','$scope','$http', 'setHeadersToken','localStorageModel', function ($location,$scope, $http, setHeadersToken,localStorageModel) {
