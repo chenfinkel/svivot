@@ -164,5 +164,3 @@ angular.module('citiesApp')
 
 
     }]);
-
-

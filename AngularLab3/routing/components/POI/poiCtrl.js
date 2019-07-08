@@ -4,7 +4,7 @@ angular.module('citiesApp')
 
     self = this;
     self.hello=true;
-    self.serverUrl = 'http://localhost:4000/';
+    self.serverUrl = 'http://localhost:3000/';
     self.poiId=[];
     self.cities = [];
     self.favorites=[];
@@ -17,12 +17,15 @@ angular.module('citiesApp')
     }
 
     self.category = [
+        "Museums",
+        "Nature",
+        "Food",
+        "NightLife"]; 
+        /** 
         "restaurant",
         "museum",
         "shopping",
-        "view point"];
-
-
+        "view point"]; */
 
 
     self.allPoi = function () {
@@ -31,7 +34,7 @@ angular.module('citiesApp')
         for(var i=0;i<self.category.length;i++)
         {
         $http({
-            url:self.serverUrl + "Poi/poifromcategory",
+            url:self.serverUrl + "Poi/pointByCategory",
             method:"GET",
             params:{Category:self.category[i]}
         })
@@ -52,7 +55,7 @@ angular.module('citiesApp')
                     }
                     if(j==20)
                     {
-                        self.pressCheck();
+                        self.pressCheck(); // ?
                     }
                 }
 
@@ -66,9 +69,9 @@ angular.module('citiesApp')
         // register user
         var j=0;
         $http({
-            url:self.serverUrl + "Poi/savedpoi",
+            url:self.serverUrl + "Poi/savedByUserOrder", // savedByDate", // we should something somehow else
             method:"GET",
-            params:{userName:self.packet.userName,
+            params:{username:self.packet.userName,
                     token:self.packet.token}
         })
             .then(function (response) {
@@ -95,7 +98,7 @@ angular.module('citiesApp')
     self.allPoi();
 
     self.pressCheck= function (){
-        var listnot =localStorageModel.getLocalStorage('listNotFav');
+        var listnot =localStorageModel.getLocalStorage('listNotFav'); //wtf
         var list =localStorageModel.getLocalStorage('listFav');
         $scope.indxCtrl.fav=0;
         for(var i=0;i<self.cities.length;i++)
@@ -236,7 +239,7 @@ angular.module('citiesApp')
      self.secLastReview={};
      self.poi2lastR = function(myid){
       $http({
-          url:self.serverUrl + "Poi/lasttworeview",
+          url:self.serverUrl + "Poi/lastTwoReviews",
           method:"GET",
           params:{PoiId:myid}
       })
@@ -275,7 +278,7 @@ angular.module('citiesApp')
       self.currentPOIrank = {};
       self.poiRank = function(myid){
           $http({
-              url:self.serverUrl + "Poi/averagepoi",
+              url:self.serverUrl + "Poi/rank",
               method:"GET",
               params:{PoiId:myid}
           })
@@ -300,7 +303,7 @@ angular.module('citiesApp')
  
       self.poiRankS = function(myid){
          $http({
-             url:self.serverUrl + "Poi/averagepoi",
+             url:self.serverUrl + "Poi/rank", //averagepoi",
              method:"GET",
              params:{PoiId:myid}
          })
@@ -326,7 +329,7 @@ angular.module('citiesApp')
       self.raiseView = function(myid){
           
           $http({
-              url:self.serverUrl + "Poi/raisebyone",
+              url:self.serverUrl + "Poi/raisebyone", // raise by one? 
               method:"GET",
               params:{PoiId:myid}
           })
@@ -337,7 +340,7 @@ angular.module('citiesApp')
               if(response.data.message == "true"){
                   
               }
-              self.poi2lastR(myid);
+              self.poi2lastR(myid); // what is this????? 
           }, function (response){
            //   window.alert("failed in raise view by 1");
           });
