@@ -10,11 +10,10 @@ angular.module('citiesApp')
 
   self.Rank="";
 
-  self.hello=true;
   self.ordering=[];
-  self.serverUrl = 'http://localhost:4000/';
+  self.serverUrl = 'http://localhost:3000/';
   self.poiId=[];
-  self.cities = [];
+  self.points = [];
   self.favorites=[];
   self.listNotLocal=[];
   self.paramPost={
@@ -22,128 +21,76 @@ angular.module('citiesApp')
     token:"",
     PoiId:"a",
     order:"b"
-  }
-
-  var token1 =localStorageModel.getLocalStorage('token');
-  var userName1 = $scope.indxCtrl.username;
-  self.packet={
-      userName:userName1,
-      token:token1
-  }
+  } 
 
   self.category = [
-      "restaurant",
-      "museum",
-      "shopping",
-      "view point"];
+      "Museums",
+      "Nature",
+      "Food",
+      "NightLife"];
+
     self.Rank1=[
         "","Views"
     ];
 
-      self.updateFav = function ()
-      {
-        var list = localStorageModel.getLocalStorage('listFav');
-        var listNot = localStorageModel.getLocalStorage('listNotFav');
-        var list1=[];    
-        //self.listNotLocal=self.poiId;
-       // window.alert(self.poiId);
-        for(var i =0;i<self.poiId.length;i++)
-        {
-            self.listNotLocal[i]=self.poiId[i];//listnotlcal - the list from the database. of the saved place.
-        }
-        for(var i =0;i<list.length;i++)
-        {
-            self.poiId.push(list[i]);
-          //window.alert(list[i]);
-        }
-        //window.alert(self.poiId);
-        for(var j =0;j<self.poiId.length;j++)
-        {
-          /*for(var k=0;k<self.poiId.length;k++)
-          {*/
-             // window.alert(self.poiId);
-            if(!listNot.includes(self.poiId[j])/*listNot[j]!=self.poiId[k]*/)
-            {
-                list1.push(self.poiId[j]);
-                   // window.alert(self.poiId[k]);
-            }
-        /* }*/
-        }
-        if(list1.length!=0)
-        {
-          self.poiId=list1;
-        }
-        $scope.indxCtrl.fav=self.poiId.length;
-      }
+    self.getAllSaved = function () {
+        $http({
+            url: self.serverUrl + "Poi/savedByDate",
+            method: "GET",
+            headers: {
+                'x-auth-token': localStorageModel.getLocalStorage('token')
+            },
+            params: { username: $scope.indxCtrl.username }
+        })
+            .then(function (response) {
+                if (response.data == "No saved points") {
+                    localStorageModel.updateLocalStorage('listFav', []);
+                } else {
+                    for (i = 0; i < response.data.length; i++) {
+                        list[i] = response.data[i].PointID;
+                    }
+                    localStorageModel.updateLocalStorage('listFav', list);
+                    $scope.indxCtrl.numberOfSaved = list.length;
+                }
+            }, function (response) {
+                // self.reg.content = response.data
+            });
+    }
 
-  self.allPoi = function () {
-      // register user
-      var j=0;
-      for(var i=0;i<self.poiId.length;i++)
-      {
-      $http({
-          url:self.serverUrl + "Poi/",
-          method:"GET",
-          params:{PoiId:self.poiId[i]}
-      })
-          .then(function (response) {
-              if(response.data.message=="no rows")
-              {
-              //    window.alert("no rows");
-              }
-              else
-              {
-                  for (var x in response.data){
-                      self.cities[j]={
-                          id:j,
-                          city:response.data[x],
-                          checked:false,
-                          text:""
-                      };
-                      j++;
-                  }               
-              }
-              self.orderTheArray();
-              self.pressCheck();
+    self.getAllSaved();
 
-          }, function (response) {
-              self.reg.content = response.data
-          });
-      }
-  }
+
     self.orderTheArray= function (){
         list=[];
         self.ordering;
-        self.cities;
+        self.points;
         for(var i =0;i<self.ordering.length;i++)
         {
-            for(var j=0;j<self.cities.length;j++)
+            for(var j=0;j<self.points.length;j++)
             {
-                if(self.ordering[i]==self.cities[j].city.PoiId)
+                if(self.ordering[i] == self.points[j].point.PoiId)
                 {
-                 list.push(self.cities[j])
+                 list.push(self.points[j])
                 }
             }
         }
-        for(var i=0;i<self.cities.length;i++)
+        for(var i=0;i<self.points.length;i++)
         {
-            if(!list.includes(self.cities[i]))
+            if(!list.includes(self.points[i]))
             {
-                list.push(self.cities[i]);
+                list.push(self.points[i]);
             }
         }
-        self.cities=list;
-
+        self.points=list;
     }
+
 
 self.orderPoi=function (poiid,text)
 {
     
-    self.paramPost.userName=self.packet.userName;
-    self.paramPost.token=self.packet.token;
+    self.paramPost.userName=$scope.indxCtrl.userName;
+    self.paramPost.token=localStorageModel.getLocalStorage('token');
     self.paramPost.PoiId=poiid;
-    
-
     var orderNum = parseInt(text);
     if(!isNaN(orderNum)){
         self.paramPost.order=text;
@@ -171,299 +118,45 @@ self.orderPoi=function (poiid,text)
     }
 
 }
-  self.getAllSaved = function () {
-      // register user
-      var j=0;
-      $http({
-          url:self.serverUrl + "Poi/savedpoi",
-          method:"GET",
-          params:{userName:self.packet.userName,
-                  token:self.packet.token}
-      })
-          .then(function (response) {
-              if(response.data.message=="no rows")
-              {
-                //  window.alert("no rows");
-                self.updateFav();               
-                self.allPoi();
-              }
-              else
-              {
-                  for (var x in response.data){
-                      self.poiId[j]=response.data[x].PoiId;
-                      self.ordering[j]=response.data[x].PoiId;
-                      j++;
-                  }
-                  window.alert(self.poiId[0]);
-                  window.alert(self.poiId[1]);
-                  window.alert(self.poiId[2]);
-                  window.alert(self.poiId[3]);
 
-                  $scope.indxCtrl.fav=j;
-                  //add here the fav
-                  self.updateFav();
-                  //                  
-                  self.allPoi();
-                  
-                  // still 5.
-              }
-
-          }, function (response) {
-
-             // self.reg.content = response.data
-          });
-  }
-  self.getAllSaved();
 
   self.pressCheck= function (){
-      for(var i=0;i<self.cities.length;i++)
+      for(var i=0;i<self.points.length;i++)
       {
           for(var j=0;j<self.poiId.length;j++)
           {
-              if(self.cities[i].city.PoiId==self.poiId[j])
+              if(self.points[i].point.PoiId == self.poiId[j])
               {
-                  self.cities[i].checked=true;
+                  self.points[i].checked=true;
               }
           }
       } 
   }
-
-
-
-
-
-  self.selectedCity= function (id){
-
-     // window.alert (self.selected )
-  }
   
-  self.checkButton= function (id){
-      var listnot =localStorageModel.getLocalStorage('listNotFav');
-      var list =localStorageModel.getLocalStorage('listFav');
-
-      if(list.includes(id))
-      {
-          var j=0;
-          var list1=[]
-          // remove the id
-          $scope.indxCtrl.fav--;
-        for(var i=0 ; i<list.length;i++)
-        {
-            //down the number by 1
-            
-            if(list[i]!=id)
-            {// insert to the list
-                list1[j]=list[i];
-                j++;
+  self.switched = function (index) {
+    self.points[index].checked = !self.points[index].checked;
+    if (!self.points[index].checked) {
+        var list = localStorageModel.getLocalStorage('listFav');
+        var list2 = [];
+        for (i = 0; i < list.length; i++) {
+            if (list[i] != self.points[index].point.PointID) {
+                list2.push(list[i]);
             }
         }
-        //set at local storage
-        localStorageModel.updateLocalStorage('listFav',list1);
-      }
-      else
-      {
-          if(!self.listNotLocal.includes(id))
-          {
-              list.push(id);
-              $scope.indxCtrl.fav++;
-              localStorageModel.updateLocalStorage('listFav',list);
-              //increase the number
-              //set at local storage
-          }
-          
-          if(listnot.includes(id))
-          {
-             // remove the id from listnot
-             // down the name
-             //set
-             var j=0;
-             var list1=[]
-             // remove the id
-             $scope.indxCtrl.fav++;
-            for(var i=0 ; i<listnot.length;i++)
-            {
-               //up the number by 1
-               
-               if(listnot[i]!=id)
-               {// insert to the list
-                   list1[j]=listnot[i];
-                   j++;
-               }
-           }
-           //set at local storage
-           localStorageModel.updateLocalStorage('listNotFav',list1);
-          }
-          else
-          {
-            if(self.listNotLocal.includes(id))
-            {   
-                // add the id to listnot
-                // down the name
-                // set at local
-                listnot.push(id);
-                $scope.indxCtrl.fav--;
-                localStorageModel.updateLocalStorage('listNotFav',listnot);
-                //increase the number
-                //set at local storage
+        localStorageModel.updateLocalStorage('listFav', list2);
+        $scope.indxCtrl.numberOfSaved--;
+        $http({
+            url: self.serverUrl + "Poi/userPOI",
+            method: "DELETE",
+            headers: {
+                'x-auth-token': localStorageModel.getLocalStorage('token') },
+            params: {
+                username: $scope.indxCtrl.userName,
+                pointID: self.points[index].point.PointID
             }
-          }
-      }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      /*window.alert(id);
-      if(list.length!=0)
-      {
-          if(list.includes(id))
-          {
-              $scope.indxCtrl.fav--;
-              var list1=[];
-
-              for(var i=0;i<list.length;i++)
-              {
-                  if(list[i]==id)
-                  {
-
-                  }
-                  else
-                  {
-                      if(!self.poiId.includes(id))
-                      {
-                        list1.push(list[i]);
-                      }
-                  }
-              }
-              localStorageModel.updateLocalStorage('listFav',list1);
-          }
-          else
-          {     
-                list.push(id);
-                $scope.indxCtrl.fav++;
-                localStorageModel.updateLocalStorage('listFav',list);
-          }
-      }
-      else
-      {
-              // we are here!          
-              list.push(id);
-              $scope.indxCtrl.fav++;
-              localStorageModel.updateLocalStorage('listFav',list);
-      }
-
-      if(listnot.length!=0)
-      {
-          if(listnot.includes(id))
-          {
-              $scope.indxCtrl.fav++;
-              var list1=[];
-              for(var i=0;i<listnot.length;i++)
-              {
-                  if(listnot[i]!=id)
-                  {
-                      if(self.poiId.includes(id))
-                      {
-                          list1.push(listnot[i]);
-                      }
-                  }
-              }
-              localStorageModel.updateLocalStorage('listNotFav',list1);
-          }
-          else
-          {
-              if(self.poiId.includes(id))
-              {
-                  listnot.push(id);
-                  $scope.indxCtrl.fav--;
-                  localStorageModel.updateLocalStorage('listNotFav',listnot);
-              }
-          }
-      }
-      else
-      {
-          if(!self.poiId.includes(id))
-          {
-              listnot.push(id);
-              $scope.indxCtrl.fav--;
-              localStorageModel.updateLocalStorage('listNotFav',listnot);
-          }
-      }*/
-    
-  }
-
-
-   self.savePoi=function()
-   {
-       var list = localStorageModel.getLocalStorage('listFav');
-       var listNot = localStorageModel.getLocalStorage('listNotFav');
-       for(var i=0;i<listNot.length;i++)
-       {
-    $http({
-        url:self.serverUrl + "Poi/poifromuser",
-        method:"DELETE",
-        params:{userName:self.packet.userName,
-                token:self.packet.token,
-                PoiId:listNot[i]}
-    })
-        .then(function (response) {
-            if(response.data.message=="false")
-            {
-         //       window.alert("false");
-            }
-            else
-            {
-                //window.alert("true");
-            }
-
-        }, function (response) {
-
-           // self.reg.content = response.data
-        });
+        }).then(function (response) { })
     }
-
-    for(var i=0;i<list.length;i++)
-    {
-        var params = {
-            token:localStorageModel.getLocalStorage('token'),
-            PoiId:list[i],
-            userName:$scope.indxCtrl.username
-        }
-        $http.post(self.serverUrl + "Poi/poitouser", params)
-        .then(function (response) {
-            //First function handles success
-
-            if(response.data.message=="false")
-            {
-
-            }
-            else
-            {
-                //window.alert("Dide");
-            }
-           // self.login.content = response.data.token;
-        }, function (response) {
-            //Second function handles error
-            self.login.content = "Something went wrong";
-        });
-    }
-    localStorageModel.updateLocalStorage('listFav',[]);
-    localStorageModel.updateLocalStorage('listNotFav',[]);
-
-
-
 }
-
 
   self.modal=document.getElementById('myModal');
   self.span = document.getElementsByClassName("close")[0];
@@ -473,33 +166,107 @@ self.orderPoi=function (poiid,text)
   $scope.btnclick=function(){
 
       self.modal.style.display = "block";
-  }   
-  
-  $scope.spanclick=function(){
-      
+  }  
+
+  self.modal = document.getElementById('myModal');
+  self.span = document.getElementsByClassName("close")[0];
+
+  $scope.spanclick = function () {
+
       self.modal.style.display = "none";
   }
-  
-  window.onclick = function(event) {
+
+  window.onclick = function (event) {
       if (event.target == self.modal) {
           self.modal.style.display = "none";
       }
   }
 
-
-  self.addToCart = function (id, city) {
-    //  window.alert(self.cities[0])
-  //    window.alert(id);// the proper id.
-   //   window.alert(city.name);// the object at the array up
-    //  window.alert(self.amount[id]); // the value of the textbox
+  self.switch = function (index) {
+      self.points[index].checked = !self.points[index].checked;
+      if (!self.points[index].checked) {
+          var list = localStorageModel.getLocalStorage('listFav');
+          var list2 = [];
+          for (i = 0; i < list.length; i++) {
+              if (list[i] != self.points[index].point.PointID) {
+                  list2.push(list[i]);
+              }
+          }
+          localStorageModel.updateLocalStorage('listFav', list2);
+          $scope.indxCtrl.numberOfSaved--;
+          $http({
+              url: self.serverUrl + "Poi/userPOI",
+              method: "DELETE",
+              headers: {
+                  'x-auth-token': localStorageModel.getLocalStorage('token')
+              },
+              params: {
+                  username: self.username,
+                  pointID: self.points[index].point.PointID
+              }
+          }).then(function (response) { })
+      }
   }
 
+
+  self.pointLastReviews = function (myid) {
+      $http({
+          url: self.serverUrl + "Poi/lastTwoReviews",
+          method: "GET",
+          params: { pointID: myid }
+      })
+          .then(function (response) {
+              $scope.indxCtrl.reviews = response.data.result;
+          }, function (response) {
+          });
+  }
+
+
+  self.raiseView = function (myid) {
+      $http.put(self.serverUrl + "Poi/viewPoint", JSON.stringify({ pointID: myid }))
+          .then(function (response) {
+
+          });
+  }
+
+  $scope.updateSelectedPoint = function (id) {
+      for (var i = 0; i < self.points.length; i++) {
+          if (self.points[i].id == id) {
+              var rank = self.points[i].point.Rank;
+              if (rank == 0) {
+                  $scope.indxCtrl.pointRank = "No ranks for this point";
+              } else {
+                  rank = (rank / 5) * 100;
+                  $scope.indxCtrl.pointRank = rank + "%";
+              }
+              self.raiseView(self.points[i].point.PointID);
+              self.points[i].point.Views = self.points[i].point.Views + 1;
+              $scope.indxCtrl.currPoint = self.points[i].point;
+          }
+      }
+  }
+
+  $scope.btnclick = function (id) {
+      $scope.updateSelectedPoint(id);
+      self.pointLastReviews(id);
+      $scope.indxCtrl.loggedIn = false;
+      $scope.indxCtrl.modal.style.display = "block";
+  }
+
+  window.onclick = function (event) {
+      if (event.target == self.modal) {
+          $scope.indxCtrl.modal.style.display = "none";
+      }
+  }
+
+
+}]);
 
 
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
-  self.disableButton=true;
-  if(localStorageModel.getLocalStorage('token')!="")
+/**   self.disableButton=true;
+  if(self.token!="")
   {
       self.disableButton=false;
   }
@@ -515,7 +282,7 @@ self.orderPoi=function (poiid,text)
   self.secLastReview={};
   self.poi2lastR = function(myid){
    $http({
-       url:self.serverUrl + "Poi/lasttworeview",
+       url:self.serverUrl + "Poi/lastTwoReviews",
        method:"GET",
        params:{PoiId:myid}
    })
@@ -554,7 +321,7 @@ self.orderPoi=function (poiid,text)
    self.currentPOIrank = {};
    self.poiRank = function(myid){
        $http({
-           url:self.serverUrl + "Poi/averagepoi",
+           url:self.serverUrl + "Poi/rank",
            method:"GET",
            params:{PoiId:myid}
        })
@@ -579,7 +346,7 @@ self.orderPoi=function (poiid,text)
 
    self.poiRankS = function(myid){
       $http({
-          url:self.serverUrl + "Poi/averagepoi",
+          url:self.serverUrl + "Poi/rank",
           method:"GET",
           params:{PoiId:myid}
       })
@@ -605,7 +372,7 @@ self.orderPoi=function (poiid,text)
    self.raiseView = function(myid){
        
        $http({
-           url:self.serverUrl + "Poi/raisebyone",
+           url:self.serverUrl + "Poi/viewPoi",
            method:"GET",
            params:{PoiId:myid}
        })
@@ -640,11 +407,11 @@ self.orderPoi=function (poiid,text)
       token:"h"
   };
 
-   self.addReview = function(myusername,myid,mytext){
-      self.userReview.userName = myusername;
+   self.addReview = function(myid,mytext){
+      self.userReview.userName = $scope.indxCtrl.userName;
       self.userReview.PoiId = myid;
       self.userReview.text = mytext;
-      self.userReview.token=localStorageModel.getLocalStorage('token');       
+      self.userReview.token=self.token;       
       $http.post(self.serverUrl + "Poi/review", self.userReview)
       .then(function (response) {
           if(response.data.message == "true"){
@@ -665,11 +432,11 @@ self.orderPoi=function (poiid,text)
       });
    }
 
-   self.addRank = function(myusername,myid,myrank){
-      self.userRank.userName = myusername;
+   self.addRank = function(myid,myrank){
+      self.userRank.userName = $scope.indxCtrl.userName;
       self.userRank.PoiId = myid;
       self.userRank.rank = myrank;
-      self.userRank.token=localStorageModel.getLocalStorage('token');       
+      self.userRank.token=self.token;       
       $http.post(self.serverUrl + "Poi/rank", self.userRank)
       .then(function (response) {
           if(response.data.message == "true"){
@@ -688,34 +455,33 @@ self.orderPoi=function (poiid,text)
        userRank:""
    };
    $scope.addR=function(){
-      var userName=$scope.indxCtrl.username;
       var mypoiid = self.currentPOI.PoiId;
       if(self.newReview.userReview!=""){
           if(self.newReview.userReview != null){
-              self.addReview(userName,mypoiid,self.newReview.userReview);
+              self.addReview($scope.indxCtrl.userName,mypoiid,self.newReview.userReview);
           }
       }
       if(self.newReview.userRank!=""){
           
           if(self.newReview.userRank == "1" || self.newReview.userRank == "2" || self.newReview.userRank == "3" || self.newReview.userRank == "4" || self.newReview.userRank == "5"){
-              self.addRank(userName,mypoiid,self.newReview.userRank);
+              self.addRank($scope.indxCtrl.userName,mypoiid,self.newReview.userRank);
           }
       }
    }     
    $scope.preclick = function(myid)
    {
        var x = 0;
-       for(var i = 0; i < self.cities.length; i++){
+       for(var i = 0; i < self.points.length; i++){
        
-           if(self.cities[i].id == myid){
+           if(self.points[i].id == myid){
               
-               self.currentPOI = self.cities[i].city;
+               self.currentPOI = self.points[i].point;
                x = i;
            
            }
        }
        self.poiRank(self.currentPOI.PoiId);
-       self.cities[x].city.Views = self.cities[x].city.Views + 1;
+       self.points[x].point.Views = self.points[x].point.Views + 1;
        
    }
 
@@ -734,6 +500,7 @@ self.orderPoi=function (poiid,text)
            self.modal.style.display = "none";
        }
    }
+}]);
    ///////////////////////////////////////////////////////////////////////////////////////////////
-
-  }]);
+*/ 
+  
