@@ -165,8 +165,8 @@ angular.module('citiesApp')
         }
 
         /////////// THIS IS THE FOR POINTS SECTION ///////////
-        
-        
+
+
         self.pointLastReviews = function (myid) {
             $http({
                 url: self.serverUrl + "Poi/lastTwoReviews",
@@ -183,25 +183,22 @@ angular.module('citiesApp')
         self.raiseView = function (myid) {
             $http.put(self.serverUrl + "Poi/viewPoint", JSON.stringify({ pointID: myid }))
                 .then(function (response) {
-                    
+
                 });
         }
 
         $scope.updateSelectedPoint = function (type, id) {
-            for (var i = 0; i < type.length; i++) {
-                if (type[i].id == id) {
-                    var rank = type[i].point.Rank;
-                    if (rank == 0) {
-                        $scope.indxCtrl.pointRank = "No ranks for this point";
-                    } else {
-                        rank = (rank/ 5) * 100;
-                        $scope.indxCtrl.pointRank = rank + "%";
-                    }
-                    self.raiseView(type[i].point.PointID);
-                    type[i].point.Views = type[i].point.Views + 1;
-                    $scope.indxCtrl.currPoint = type[i].point;
-                }
+            var rank = type[id].point.Rank;
+            if (rank == 0) {
+                $scope.indxCtrl.pointRank = "No ranks for this point";
+            } else {
+                rank = (rank / 5) * 100;
+                $scope.indxCtrl.pointRank = rank + "%";
             }
+            self.raiseView(type[id].point.PointID);
+            type[id].point.Views = type[id].point.Views + 1;
+            $scope.indxCtrl.currPoint = type[id].point;
+
         }
 
         $scope.popularClicked = function (id) {

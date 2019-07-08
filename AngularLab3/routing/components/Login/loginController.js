@@ -58,6 +58,7 @@ angular.module('citiesApp')
                 { hashbang: "#/logout", value: "Logout" }
             ];
             $scope.indxCtrl.showSavedIcon = true;
+            $scope.indxCtrl.loggedIn = true;
         }
 
 
@@ -124,14 +125,15 @@ angular.module('citiesApp')
         /////////// THIS IS THE FOR POINTS SECTION ///////////
         
         
-        self.pointLastReviews = function (myid) {
+        self.pointLastReviews = function (id) {
             $http({
                 url: self.serverUrl + "Poi/lastTwoReviews",
                 method: "GET",
-                params: { pointID: myid }
+                params: { pointID: self.threePopular[id].point.PointID }
             })
                 .then(function (response) {
-                    $scope.indxCtrl.reviews = response.data.result;
+                    reviews = response.data.result;
+                    $scope.indxCtrl.reviews = reviews;
                 }, function (response) {
                 });
         }
@@ -145,20 +147,18 @@ angular.module('citiesApp')
         }
 
         $scope.updateSelectedPoint = function (id) {
-            for (var i = 0; i < self.threePopular.length; i++) {
-                if (self.threePopular[i].id == id) {
-                    var rank = self.threePopular[i].point.Rank;
+                    var rank = self.threePopular[id].point.Rank;
                     if (rank == 0) {
                         $scope.indxCtrl.pointRank = "No ranks for this point";
                     } else {
                         rank = (rank/ 5) * 100;
                         $scope.indxCtrl.pointRank = rank + "%";
                     }
-                    self.raiseView(self.threePopular[i].point.PointID);
-                    self.threePopular[i].point.Views = self.threePopular[i].point.Views + 1;
-                    $scope.indxCtrl.currPoint = self.threePopular[i].point;
-                }
-            }
+                    self.raiseView(self.threePopular[id].point.PointID);
+                    self.threePopular[id].point.Views = self.threePopular[id].point.Views + 1;
+                    $scope.indxCtrl.currPoint = self.threePopular[id].point;
+        
+            
         }
 
         $scope.btnclick = function (id) {

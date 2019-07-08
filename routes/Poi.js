@@ -63,15 +63,14 @@ router.delete('/userPOI', function (req, res) {
 
 
 router.post('/review', function (req, res) {
-    var pointID = req.body.pointID; 
-    var username = req.body.username;
-    var review = req.body.review;
+    var pointID = req.query.pointID; 
+    var username = req.query.username;
+    var review = req.query.review;
     if (username == req.decoded.payload.userName) {
         var statement = "select * from PointsReviews where SubmittedBy Like '" + username + "' and PointId = " + pointID + "";
         return DButilsAzure.execQuery(statement).then(function (result) {
             var date = nodeDT.create();
             var formatDate = date.format('Y-m-d H:M:S');
-            console.log(formatDate);
             if (result.length == 0) {
                 var statement = "insert into PointsReviews (PointId,SubmittedBy,DateSubmitted,Review) VALUES (" + pointID + ",'" + username + "','" + formatDate + "','" + review + "')";
                 return DButilsAzure.execQuery(statement).then(function (result) {
@@ -97,7 +96,6 @@ router.post('/review', function (req, res) {
 
 
 router.put('/viewPoint', function (req, res) {
-    console.log("jjjjjjjjjjjj" + req);
     var pointID = req.body.pointID;
     var statement = "select * from PointsOfInterest where PointId = " + pointID + "";
     return DButilsAzure.execQuery(statement).then(function (result) {
@@ -117,9 +115,9 @@ router.put('/viewPoint', function (req, res) {
 });
 
 router.post('/rank', function (req, res) {
-    var id = req.body.pointID; 
-    var username = req.body.username;
-    var rank = req.body.rank;
+    var id = req.query.pointID; 
+    var username = req.query.username;
+    var rank = req.query.rank;
     if (username == req.decoded.payload.userName) {
         var statement = "select * from PointsReviews where SubmittedBy Like '" + username + "' and PointId = " + id + "";
         DButilsAzure.execQuery(statement).then(function (result) {
@@ -188,8 +186,6 @@ router.get('/lastTwoSaved', function (req, res) {
 
 router.get('/savedByDate', function (req, res) {
     var username = req.query.username;
-    console.log("username is: " + username);
-    console.log("token is: " + req.decoded.payload.userName);
     if (username == req.decoded.payload.userName) {
         var statement = "select * from UserPoints where Username like '" + username + "' ORDER BY DateSaved DESC";
         DButilsAzure.execQuery(statement).then(function (result1) {
@@ -246,8 +242,6 @@ router.get('/lastTwoReviews', function (req, res) {
 router.post('/savePoint', function (req, res) {
     var id = req.query.pointID;
     var username = req.query.username;
-    console.log("Poi line 247, method 'savePoint'. id is: " + id);
-    console.log("username is: "+ username);
     if (username == req.decoded.payload.userName) {
         var statement = "select * from UserPoints where PointId = " + id + " and Username like '" + username + "'";
         return DButilsAzure.execQuery(statement).then(function (result) {
