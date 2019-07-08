@@ -7,12 +7,12 @@
         </tr>
     
         <tr ng-style="{'bgcolor': '#669900'}" ng-repeat="p in poiCtrl.points">
-            <td ng-style="{'width': '40%'}"  ng-click="btnclick(p.id)">
+            <td ng-style="{'width': '40%', 'cursor': 'pointer'}"  ng-click="btnclick(p.id)">
                 <span class="myT2"><span ng-bind="p.point.Name" ></span></span>
             </td>
             
             <td ng-style="{'width': '40%'}"  ng-click="btnclick(p.id)">
-                <img ng-style="{'height': '100px', 'width': '100px'}" ng-src="{{p.point.imagePath}} ">
+                <img ng-style="{'height': '100px', 'width': '100px', 'cursor': 'pointer'}" ng-src="{{p.point.imagePath}} ">
             </td>
     
             <td ng-style="{'width': '40%'}">

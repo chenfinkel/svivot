@@ -36,7 +36,7 @@ angular.module('citiesApp')
                                 points2 = response.data.result;
                                 for (j = 0; j < points2.length; j++) {
                                     self.lastTwoPoints[k] = {
-                                        id: j,
+                                        id: k,
                                         point: points2[j],
                                         checked: true
                                     };
@@ -45,6 +45,7 @@ angular.module('citiesApp')
                             }, function (response) {
                                 //self.reg.content = response.data
                             });
+                            
                     }
                 }, function (response) {
                     //self.reg.content = response.data
@@ -165,8 +166,22 @@ angular.module('citiesApp')
         }
 
         /////////// THIS IS THE FOR POINTS SECTION ///////////
-        
-        
+
+        self.modal = document.getElementById('myModal');
+        self.span = document.getElementsByClassName("close")[0];
+
+        $scope.spanclick = function () {
+
+            self.modal.style.display = "none";
+        }
+
+        window.onclick = function (event) {
+            if (event.target == self.modal) {
+                self.modal.style.display = "none";
+            }
+        }
+
+
         self.pointLastReviews = function (myid) {
             $http({
                 url: self.serverUrl + "Poi/lastTwoReviews",
@@ -183,25 +198,22 @@ angular.module('citiesApp')
         self.raiseView = function (myid) {
             $http.put(self.serverUrl + "Poi/viewPoint", JSON.stringify({ pointID: myid }))
                 .then(function (response) {
-                    
+
                 });
         }
 
         $scope.updateSelectedPoint = function (type, id) {
-            for (var i = 0; i < type.length; i++) {
-                if (type[i].id == id) {
-                    var rank = type[i].point.Rank;
-                    if (rank == 0) {
-                        $scope.indxCtrl.pointRank = "No ranks for this point";
-                    } else {
-                        rank = (rank/ 5) * 100;
-                        $scope.indxCtrl.pointRank = rank + "%";
-                    }
-                    self.raiseView(type[i].point.PointID);
-                    type[i].point.Views = type[i].point.Views + 1;
-                    $scope.indxCtrl.currPoint = type[i].point;
-                }
+            var rank = type[id].point.Rank;
+            if (rank == 0) {
+                $scope.indxCtrl.pointRank = "No ranks for this point";
+            } else {
+                rank = (rank / 5) * 100;
+                $scope.indxCtrl.pointRank = rank + "%";
             }
+            self.raiseView(type[id].point.PointID);
+            type[id].point.Views = type[id].point.Views + 1;
+            $scope.indxCtrl.currPoint = type[id].point;
+
         }
 
         $scope.popularClicked = function (id) {
@@ -212,16 +224,11 @@ angular.module('citiesApp')
         }
 
         $scope.savedClicked = function (id) {
+            console.log("id is: " + id)
             $scope.updateSelectedPoint(self.lastTwoPoints, id);
             self.pointLastReviews(id);
             $scope.indxCtrl.loggedIn = true;
             $scope.indxCtrl.modal.style.display = "block";
-        }
-
-        window.onclick = function (event) {
-            if (event.target == self.modal) {
-                $scope.indxCtrl.modal.style.display = "none";
-            }
         }
 
 

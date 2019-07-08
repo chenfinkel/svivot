@@ -361,7 +361,7 @@
             <!-- Modal content -->
             <div class="modal-content">
                     <span class="close" ng-click="spanclick()">&times;</span>
-                    <p><span class="myT"><span ng-bind="indxCtrl.currPoint.Title"></span></span></p>
+                    <p><span class="myT"><span ng-bind="indxCtrl.currPoint.Name"></span></span></p>
     
                     <table ng-style="{'align': 'center', 'width': '100%', 'dir': 'ltr'}">
                             <tr ng-style="{'bgcolor': 'rgb(241, 216, 238)'}">
@@ -402,28 +402,45 @@
                                                                     <form name="form1" novalidate>
                                                                             <label>Review Description:
                                                                                     <input type="text" name="RD"
-                                                                                            ng-model="indxCtrl.newReview.userReview"
+                                                                                            ng-model="indxCtrl.review"
                                                                                             required />
                                                                             </label>
                                                                             <br />
-                                                                            <label>Rank:
-                                                                                    <input type="text"
-                                                                                            ng-model="indxCtrl.newReview.userRank"
-                                                                                            name="rank" required />
-                                                                            </label>
-                                                                            <br />
                                                                             <input type="submit" value="Add"
-                                                                                    ng-disabled="indxCtrl.disableButton"
-                                                                                    ng-click="addR()" />
+                                                                                    ng-click="addReview()" />
     
                                                                     </form>
                                                             </td>
                                                     </tr>
                                             </table>
                                     </td>
+                                    <td ng-show="indxCtrl.loggedIn" ng-style="{'width': '50%'}">
+                                            <table ng-style="{'align': 'center', 'width': '100%', 'dir': 'ltr'}">
+                                                    <tr ng-style="{'bgcolor': '#669900'}">
+                                                            <td ng-style="{'width': '100%'}"><span class="myT">Add New
+                                                                            Rank</span></td>
+                                                    </tr>
+                                                    <tr ng-style="{'bgcolor': '#669900'}">
+                                                            <td ng-style="{'width': '100%'}">
+                                                                    <form name="form1" novalidate>
+                                                                            <label>Rank:
+                                                                                    <select ng-model="indxCtrl.rank" name="rankSelect"
+                                                                                    ng-options="rank as rank for rank in indxCtrl.ranks" required>
+                                                                                    </select>
+                                                                            </label>
+                                                                            <br />
+                                                                            <input type="submit" value="Add"
+                                                                                    ng-click="indxCtrl.addRank()" />
     
-    
-    
+                                                                    </form>
+                                                            </td>
+                                                    </tr>
+                                            </table>
+                                    </td>
+                            </tr>
+                    </table>
+                    <table ng-style="{'align': 'center', 'width': '100%', 'dir': 'ltr'}">
+                            <tr ng-style="{'bgcolor': '#669900'}">
                                     <td ng-style="{'width': '50%'}">
     
                                             <table ng-style="{'align': 'center', 'width': '100%', 'dir': 'ltr'}">
@@ -445,10 +462,11 @@
                                                     </tr>
     
                                             </table>
+                                            
     
                                     </td>
-                            </tr>
-                    </table>
+                                </tr>
+                            </table>
             </div>
     
     </div>
