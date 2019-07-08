@@ -97,17 +97,12 @@ angular.module('citiesApp')
         }
 
         self.switch = function (index) {
-            for (i = 0; i < points.length; i++){
-                console.log("id is: " + points[i].id);
-            }
-            console.log("checked before is: " + points[index].checked);
-            points[index].checked = !points[index].checked;
-            console.log("checked after is: " + points[index].checked);
-            if (!points[index].checked) {
+            self.points[index].checked = !self.points[index].checked;
+            if (!self.points[index].checked) {
                 var list = localStorageModel.getLocalStorage('listFav');
                 var list2 = [];
                 for (i = 0; i < list.length; i++) {
-                    if (list[i] != points[index].point.PointID) {
+                    if (list[i] != self.points[index].point.PointID) {
                         list2.push(list[i]);
                     }
                 }
@@ -121,7 +116,7 @@ angular.module('citiesApp')
                     },
                     params: {
                         username: self.username,
-                        pointID: points[index].point.PointID
+                        pointID: self.points[index].point.PointID
                     }
                 }).then(function (response) { })
             } else {
@@ -134,7 +129,7 @@ angular.module('citiesApp')
                     },
                     params: {
                         username: self.username,
-                        pointID: points[index].point.PointID
+                        pointID: self.points[index].point.PointID
                     }
                 }).then(function (response) { })
             }
