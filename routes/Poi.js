@@ -204,9 +204,9 @@ router.get('/savedByDate', function (req, res) {
 
 
 router.post('/savedIndex', function (req, res) {
-    var id = req.body.pointID;
-    var username = req.body.username;
-    var index = req.body.index;
+    var id = req.query.pointID;
+    var username = req.query.username;
+    var index = req.query.index;
     if (username == req.decoded.payload.userName) {
         var statement = "UPDATE UserPoints SET PointIndex = " + index + " WHERE PointId = " + id + " and Username like '" + username + "'";
         DButilsAzure.execQuery(statement).then(function (result) {

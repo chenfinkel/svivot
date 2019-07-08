@@ -10,7 +10,7 @@ Rank
 </select>
 
 
-<p><span id="abdror"data-shadow-text="Text-Shadow">Paris Advisor- Favorites page</span></p>
+<p><span id="abdror" data-shadow-text="Text-Shadow">Paris Advisor- Favorites page</span></p>
 <table ng-style="{'align': 'center', 'width': '80%', 'dir': 'ltr'}">
         <tr ng-style="{'bgcolor': '#669900'}">
             <td ng-style="{'width': '30%'}"><span class="myT">Point Of Interest</span></td>
@@ -25,102 +25,18 @@ Rank
             </td>
             
             <td ng-style="{'width': '30%'}" ng-click="btnclick(point.id)">
-                <img ng-style="{'height': '100px', 'width': '100px'}" ng-src="{{point.point.imagePath} ">
+                <img ng-style="{'height': '100px', 'width': '100px'}" ng-src="{{point.point.imagePath}} ">
             </td>
     
             <td ng-style="{'width': '20%'}">
                 <label class="switch">
-                        <input type="checkbox" ng-checked="point.checked" ng-click="fvrCtrl.switched(point.point.PointID)">
+                        <input type="checkbox" ng-checked="point.checked" ng-click="fvrCtrl.switched(point.id)">
                         <span class="slider round"></span>
                 </label>
             </td>
             <td ng-style="{'width': '20%'}">
-                <input type="textbox" ng-model=point.text>
-                <button ng-click="fvrCtrl.orderPoi(point.point.PointID,point.text)">Apply</button>
+                <input type="textbox" ng-model=point.userIndex>
+                <button ng-click="fvrCtrl.order(point.id)">Apply</button>
             </td>
         </tr>
 </table>
-
-
-
-<div id="myModal" class="modal">
-
-        <!-- Modal content -->
-        <div class="modal-content">
-                <span class="close" ng-click="spanclick()">&times;</span>
-                <p><span class="myT"><span ng-bind="fvrCtrl.currentPOI.Title"></span></span></p>
-
-                <table ng-style="{'align': 'center', 'width': '100%', 'dir': 'ltr'}">
-                        <tr ng-style="{'bgcolor': '#669900'}">
-                                <td ng-style="{'width': '40%'}"><span class="myT">Picture</span></td>
-                                <td ng-style="{'width': '20%'}"><span class="myT">Views</span></td>
-                                <td ng-style="{'width': '20%'}"><span class="myT">Rank</span></td>
-                                <td ng-style="{'width': '20%'}"><span class="myT">Description</span></td>
-                        </tr>
-                        <tr ng-style="{'bgcolor': '#669900'}">
-                                <td ng-style="{'width': '40%'}">
-                                        <img ng-style="{'height': '200px', 'width': '200px'}" ng-src="{{fvrCtrl.currentPOI.PicturePath}} " >
-                                </td>
-                                <td ng-style="{'width': '20%'}">
-                                        <span class="myT2"><span ng-bind="fvrCtrl.currentPOI.Views"></span></span>
-                                </td> 
-                                <td ng-style="{'width': '20%'}">
-                                        <span class="myT2"><span ng-bind="fvrCtrl.currentPOIrank">%</span></span>
-                                </td>
-                                <td ng-style="{'width': '20%'}">
-                                        <span class="myT2"><span ng-bind="fvrCtrl.currentPOI.Description"></span></span>
-                                </td>
-                        </tr>
-                </table>
-                <br>
-                <br>
-                <br>
-                <table  ng-style="{'align': 'center', 'width': '100%', 'dir': 'ltr'}">
-                        <tr ng-style="{'bgcolor': '#669900'}">
-                                <td ng-style="{'width': '50%'}">
-                                        <table ng-style="{'align': 'center', 'width': '100%', 'dir': 'ltr'}">
-                                                <tr ng-style="{'bgcolor': '#669900'}">
-                                                        <td ng-style="{'width': '100%'}"><span class="myT">Add New Review</span></td>  
-                                                </tr>
-                                                <tr ng-style="{'bgcolor': '#669900'}">
-                                                        <td ng-style="{'width': '100%'}">
-                                                                <form name="form" novalidate>
-                                                                        <label>Review Description:
-                                                                                <input type="text" name="RD" ng-model="fvrCtrl.newReview.userReview" required />
-                                                                        </label>
-                                                                        <br/>
-                                                                        <label>Rank:
-                                                                                <input type="text" ng-model="fvrCtrl.newReview.userRank" name="rank" required />
-                                                                        </label>
-                                                                        <br />
-                                                                        <input type="submit" value="Add" ng-disabled="fvrCtrl.disableButton" ng-click="addR()"/>
-                                                                        
-                                                                </form>
-                                                        </td>
-                                                </tr>
-                                        </table>
-                                </td>
-
-
-
-                                <td ng-style="{'width': '50%'}">
-
-                                        <table ng-style="{'align': 'center', 'width': '100%', 'dir': 'ltr'}">
-                                                <tr ng-style="{'bgcolor': '#669900'}">
-                                                        <td ng-style="{'width': '100%'}"><span class="myT">Two Last Review</span></td>  
-                                                </tr>
-
-                                                <tr ng-style="{'bgcolor': '#669900'}" ng-repeat="R in fvrCtrl.reviews">
-                                                        <td ng-style="{'width': '100%'}">
-                                                                <span class="myT2"><span ng-bind="R.myD"></span></span>
-                                                        </td>
-                                                </tr> 
-
-                                        </table>
-
-                                </td>     
-                        </tr> 
-                </table>
-        </div>
-              
-</div>

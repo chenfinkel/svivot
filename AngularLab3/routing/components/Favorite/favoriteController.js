@@ -1,266 +1,243 @@
 angular.module('citiesApp')
-.controller('favoriteController', ['$location','$scope','$http', 'setHeadersToken','localStorageModel', function ($location,$scope, $http, setHeadersToken,localStorageModel) {
-  if(!$scope.indxCtrl.showSavedIcon)
-  {
-    $location.path('/login');
-  }
+    .controller('favoriteController', ['$location', '$scope', '$http', 'setHeadersToken', 'localStorageModel', function ($location, $scope, $http, setHeadersToken, localStorageModel) {
+        if (!$scope.indxCtrl.showSavedIcon) {
+            $location.path('/login');
+        }
 
-  self = this;
-  self.Category1="";//Category1
+        self = this;
+        self.serverUrl = 'http://localhost:3000/';
 
-  self.Rank="";
 
-  self.ordering=[];
-  self.serverUrl = 'http://localhost:3000/';
-  self.poiId=[];
-  self.points = [];
-  self.favorites=[];
-  self.listNotLocal=[];
-  self.paramPost={
-    userName:"",
-    token:"",
-    PoiId:"a",
-    order:"b"
-  } 
+        self.username = $scope.indxCtrl.username;
+        self.Category1 = "";//Category1
 
-  self.category = [
-      "Museums",
-      "Nature",
-      "Food",
-      "NightLife"];
+        self.Rank = "";
 
-    self.Rank1=[
-        "","Views"
-    ];
+        self.ordering = [];
 
-    self.getAllSaved = function () {
-        $http({
-            url: self.serverUrl + "Poi/savedByDate",
-            method: "GET",
-            headers: {
-                'x-auth-token': localStorageModel.getLocalStorage('token')
-            },
-            params: { username: $scope.indxCtrl.username }
-        })
-            .then(function (response) {
-                if (response.data == "No saved points") {
-                    localStorageModel.updateLocalStorage('listFav', []);
-                } else {
-                    for (i = 0; i < response.data.length; i++) {
-                        list[i] = response.data[i].PointID;
+        self.points = [];
+        self.favorites = [];
+        self.listNotLocal = [];
+        self.paramPost = {
+            userName: "",
+            token: "",
+            PoiId: "a",
+            order: "b"
+        }
+
+        self.category = [
+            "Museums",
+            "Nature",
+            "Food",
+            "NightLife"];
+
+        self.getAllSaved = function () {
+            $http({
+                url: self.serverUrl + "Poi/savedByDate",
+                method: "GET",
+                headers: {
+                    'x-auth-token': localStorageModel.getLocalStorage('token')
+                },
+                params: { username: $scope.indxCtrl.username }
+            })
+                .then(function (response) {
+                    if (response.data == "No saved points") {
+                        localStorageModel.updateLocalStorage('listFav', []);
+                    } else {
+                        var k = 0;
+                        list = [];
+                        temp = response.data.result;
+                        for (i = 0; i < temp.length; i++) {
+                            list[i] = temp[i].PointID;
+                            $http({
+                                url: self.serverUrl + "Poi/",
+                                method: "GET",
+                                params: { pointID: temp[i].PointID }
+                            })
+                                .then(function (response) {
+                                    temp2 = response.data.result;
+                                    for (j = 0; j < temp2.length; j++) {
+                                        self.points[k] = {
+                                            id: k,
+                                            point: temp2[j],
+                                            checked: true,
+                                            userIndex: ""
+                                        };
+                                        k++;
+                                    }
+                                }, function (response) {
+                                    //self.reg.content = response.data
+                                });
+                            localStorageModel.updateLocalStorage('listFav', list);
+                            $scope.indxCtrl.numberOfSaved = list.length;
+                        }
                     }
-                    localStorageModel.updateLocalStorage('listFav', list);
-                    $scope.indxCtrl.numberOfSaved = list.length;
-                }
-            }, function (response) {
-                // self.reg.content = response.data
-            });
-    }
+                }, function (response) {
+                    // self.reg.content = response.data
+                });
+        }
 
-    self.getAllSaved();
+        self.getAllSaved();
 
 
-    self.orderTheArray= function (){
-        list=[];
-        self.ordering;
-        self.points;
-        for(var i =0;i<self.ordering.length;i++)
-        {
-            for(var j=0;j<self.points.length;j++)
-            {
-                if(self.ordering[i] == self.points[j].point.PoiId)
-                {
-                 list.push(self.points[j])
+        self.orderTheArray = function () {
+            list = [];
+            self.ordering;
+            self.points;
+            for (var i = 0; i < self.ordering.length; i++) {
+                for (var j = 0; j < self.points.length; j++) {
+                    if (self.ordering[i] == self.points[j].point.PoiId) {
+                        list.push(self.points[j])
+                    }
                 }
             }
-        }
-        for(var i=0;i<self.points.length;i++)
-        {
-            if(!list.includes(self.points[i]))
-            {
-                list.push(self.points[i]);
-            }
-        }
-        self.points=list;
-    }
-
-
-self.orderPoi=function (poiid,text)
-{
-    
-    self.paramPost.userName=$scope.indxCtrl.userName;
-    self.paramPost.token=localStorageModel.getLocalStorage('token');
-    self.paramPost.PoiId=poiid;
-    var orderNum = parseInt(text);
-    if(!isNaN(orderNum)){
-        self.paramPost.order=text;
-        if(orderNum>0 && orderNum <=21){
-            $http.post(self.serverUrl + "Poi/setOrderPoi", self.paramPost)
-            .then(function (response) {
-
-                //First function handles success
-                if(response.data.message=="true")
-                {
-                    // we do something here
+            for (var i = 0; i < self.points.length; i++) {
+                if (!list.includes(self.points[i])) {
+                    list.push(self.points[i]);
                 }
-               
-            }, function (response) {
-                //Second function handles error
-                self.login.content = "Something went wrong";
-            });
+            }
+            self.points = list;
         }
-        else{
-            window.alert("number need to be 1-20")
+
+
+        self.order = function (id) {
+            console.log("id is: "+ id);
+            pid = self.points[id].point.PointID;
+            index = self.points[id].point.userIndex;
+            console.log("userindex is: " + index);
+            var indexNumber = parseInt(index);
+            if (!isNaN(indexNumber)) {
+                if (indexNumber > 0) {
+                    $http({
+                        url: self.serverUrl + "Poi/savedIndex",
+                        method: "POST",
+                        headers: {
+                            'x-auth-token': localStorageModel.getLocalStorage('token')
+                        },
+                        params: {
+                            username: self.username,
+                            pointID: pid,
+                            index: indexNumber
+                        }
+                    }).then(function (response) {
+                        window.alert("Index saved");
+                    });
+                }
+                else {
+                    window.alert("Number must be greater than zero");
+                }
+            }
+            else {
+                window.alert("Please enter a number");
+            }
+
         }
-    }
-    else{
-        window.alert("enter a number");
-    }
 
-}
-
-
-  self.pressCheck= function (){
-      for(var i=0;i<self.points.length;i++)
-      {
-          for(var j=0;j<self.poiId.length;j++)
-          {
-              if(self.points[i].point.PoiId == self.poiId[j])
-              {
-                  self.points[i].checked=true;
-              }
-          }
-      } 
-  }
-  
-  self.switched = function (index) {
-    self.points[index].checked = !self.points[index].checked;
-    if (!self.points[index].checked) {
-        var list = localStorageModel.getLocalStorage('listFav');
-        var list2 = [];
-        for (i = 0; i < list.length; i++) {
-            if (list[i] != self.points[index].point.PointID) {
-                list2.push(list[i]);
+        self.switched = function (index) {
+            self.points[index].checked = !self.points[index].checked;
+            if (!self.points[index].checked) {
+                var list = localStorageModel.getLocalStorage('listFav');
+                var list2 = [];
+                for (i = 0; i < list.length; i++) {
+                    if (list[i] != self.points[index].point.PointID) {
+                        list2.push(list[i]);
+                    }
+                }
+                localStorageModel.updateLocalStorage('listFav', list2);
+                $scope.indxCtrl.numberOfSaved--;
+                $http({
+                    url: self.serverUrl + "Poi/userPOI",
+                    method: "DELETE",
+                    headers: {
+                        'x-auth-token': localStorageModel.getLocalStorage('token')
+                    },
+                    params: {
+                        username: self.username,
+                        pointID: self.points[index].point.PointID
+                    }
+                }).then(function (response) { })
+            } else {
+                $scope.indxCtrl.numberOfSaved++;
+                $http({
+                    url: self.serverUrl + "Poi/savePoint",
+                    method: "POST",
+                    headers: {
+                        'x-auth-token': localStorageModel.getLocalStorage('token')
+                    },
+                    params: {
+                        username: self.username,
+                        pointID: self.points[index].point.PointID
+                    }
+                }).then(function (response) { })
             }
         }
-        localStorageModel.updateLocalStorage('listFav', list2);
-        $scope.indxCtrl.numberOfSaved--;
-        $http({
-            url: self.serverUrl + "Poi/userPOI",
-            method: "DELETE",
-            headers: {
-                'x-auth-token': localStorageModel.getLocalStorage('token') },
-            params: {
-                username: $scope.indxCtrl.userName,
-                pointID: self.points[index].point.PointID
+
+        self.modal = document.getElementById('myModal');
+        self.span = document.getElementsByClassName("close")[0];
+
+        $scope.spanclick = function () {
+
+            self.modal.style.display = "none";
+        }
+
+        window.onclick = function (event) {
+            if (event.target == self.modal) {
+                self.modal.style.display = "none";
             }
-        }).then(function (response) { })
-    }
-}
+        }
 
-  self.modal=document.getElementById('myModal');
-  self.span = document.getElementsByClassName("close")[0];
-  self.btn = document.getElementById("myBtn");
-  
-  
-  $scope.btnclick=function(){
-
-      self.modal.style.display = "block";
-  }  
-
-  self.modal = document.getElementById('myModal');
-  self.span = document.getElementsByClassName("close")[0];
-
-  $scope.spanclick = function () {
-
-      self.modal.style.display = "none";
-  }
-
-  window.onclick = function (event) {
-      if (event.target == self.modal) {
-          self.modal.style.display = "none";
-      }
-  }
-
-  self.switch = function (index) {
-      self.points[index].checked = !self.points[index].checked;
-      if (!self.points[index].checked) {
-          var list = localStorageModel.getLocalStorage('listFav');
-          var list2 = [];
-          for (i = 0; i < list.length; i++) {
-              if (list[i] != self.points[index].point.PointID) {
-                  list2.push(list[i]);
-              }
-          }
-          localStorageModel.updateLocalStorage('listFav', list2);
-          $scope.indxCtrl.numberOfSaved--;
-          $http({
-              url: self.serverUrl + "Poi/userPOI",
-              method: "DELETE",
-              headers: {
-                  'x-auth-token': localStorageModel.getLocalStorage('token')
-              },
-              params: {
-                  username: self.username,
-                  pointID: self.points[index].point.PointID
-              }
-          }).then(function (response) { })
-      }
-  }
+        self.pointLastReviews = function (myid) {
+            $http({
+                url: self.serverUrl + "Poi/lastTwoReviews",
+                method: "GET",
+                params: { pointID: myid }
+            })
+                .then(function (response) {
+                    $scope.indxCtrl.reviews = response.data.result;
+                }, function (response) {
+                });
+        }
 
 
-  self.pointLastReviews = function (myid) {
-      $http({
-          url: self.serverUrl + "Poi/lastTwoReviews",
-          method: "GET",
-          params: { pointID: myid }
-      })
-          .then(function (response) {
-              $scope.indxCtrl.reviews = response.data.result;
-          }, function (response) {
-          });
-  }
+        self.raiseView = function (myid) {
+            $http.put(self.serverUrl + "Poi/viewPoint", JSON.stringify({ pointID: myid }))
+                .then(function (response) {
+
+                });
+        }
+
+        $scope.updateSelectedPoint = function (id) {
+            for (var i = 0; i < self.points.length; i++) {
+                if (self.points[i].id == id) {
+                    var rank = self.points[i].point.Rank;
+                    if (rank == 0) {
+                        $scope.indxCtrl.pointRank = "No ranks for this point";
+                    } else {
+                        rank = (rank / 5) * 100;
+                        $scope.indxCtrl.pointRank = rank + "%";
+                    }
+                    self.raiseView(self.points[i].point.PointID);
+                    self.points[i].point.Views = self.points[i].point.Views + 1;
+                    $scope.indxCtrl.currPoint = self.points[i].point;
+                }
+            }
+        }
+
+        $scope.btnclick = function (id) {
+            $scope.updateSelectedPoint(id);
+            self.pointLastReviews(id);
+            $scope.indxCtrl.loggedIn = false;
+            $scope.indxCtrl.modal.style.display = "block";
+        }
+
+        window.onclick = function (event) {
+            if (event.target == self.modal) {
+                $scope.indxCtrl.modal.style.display = "none";
+            }
+        }
 
 
-  self.raiseView = function (myid) {
-      $http.put(self.serverUrl + "Poi/viewPoint", JSON.stringify({ pointID: myid }))
-          .then(function (response) {
-
-          });
-  }
-
-  $scope.updateSelectedPoint = function (id) {
-      for (var i = 0; i < self.points.length; i++) {
-          if (self.points[i].id == id) {
-              var rank = self.points[i].point.Rank;
-              if (rank == 0) {
-                  $scope.indxCtrl.pointRank = "No ranks for this point";
-              } else {
-                  rank = (rank / 5) * 100;
-                  $scope.indxCtrl.pointRank = rank + "%";
-              }
-              self.raiseView(self.points[i].point.PointID);
-              self.points[i].point.Views = self.points[i].point.Views + 1;
-              $scope.indxCtrl.currPoint = self.points[i].point;
-          }
-      }
-  }
-
-  $scope.btnclick = function (id) {
-      $scope.updateSelectedPoint(id);
-      self.pointLastReviews(id);
-      $scope.indxCtrl.loggedIn = false;
-      $scope.indxCtrl.modal.style.display = "block";
-  }
-
-  window.onclick = function (event) {
-      if (event.target == self.modal) {
-          $scope.indxCtrl.modal.style.display = "none";
-      }
-  }
-
-
-}]);
+    }]);
 
 
 
@@ -275,7 +252,7 @@ self.orderPoi=function (poiid,text)
       self.disableButton=true;
   }
 
-  
+
   self.currentPOI={};
   self.reviews=[];
   self.firstLastReview={};
@@ -288,7 +265,7 @@ self.orderPoi=function (poiid,text)
    })
    .then(function (response) {
        if(response.data.message == "no review for this poi"){
-           
+
            self.firstLastReview="no review for this poi";
            self.secLastReview="no review for this poi";
        }
@@ -296,12 +273,12 @@ self.orderPoi=function (poiid,text)
     //       window.alert("errorrrrrrrrrrr");
        }
        else if(response.data.message == "2 reviews"){
-           
+
            self.firstLastReview=response.data.firstPoi.review;
            self.secLastReview=response.data.secondPoi.review;
        }
        else{
-           
+
            for (var x in response.data){
                self.firstLastReview=response.data[x].review;
                self.secLastReview="no review for this poi";
@@ -370,7 +347,7 @@ self.orderPoi=function (poiid,text)
   }
 
    self.raiseView = function(myid){
-       
+
        $http({
            url:self.serverUrl + "Poi/viewPoi",
            method:"GET",
@@ -381,7 +358,7 @@ self.orderPoi=function (poiid,text)
               // window.alert("problem in raise view by 1");
            }
            if(response.data.message == "true"){
-               
+
            }
            self.poi2lastR(myid);
        }, function (response){
@@ -392,7 +369,7 @@ self.orderPoi=function (poiid,text)
    self.modal=document.getElementById('myModal');
    self.span = document.getElementsByClassName("close")[0];
    self.btn = document.getElementById("myBtn");
-   
+
    self.userReview = {
       userName: "s",
       PoiId: "d",
@@ -411,7 +388,7 @@ self.orderPoi=function (poiid,text)
       self.userReview.userName = $scope.indxCtrl.userName;
       self.userReview.PoiId = myid;
       self.userReview.text = mytext;
-      self.userReview.token=self.token;       
+      self.userReview.token=self.token;
       $http.post(self.serverUrl + "Poi/review", self.userReview)
       .then(function (response) {
           if(response.data.message == "true"){
@@ -436,7 +413,7 @@ self.orderPoi=function (poiid,text)
       self.userRank.userName = $scope.indxCtrl.userName;
       self.userRank.PoiId = myid;
       self.userRank.rank = myrank;
-      self.userRank.token=self.token;       
+      self.userRank.token=self.token;
       $http.post(self.serverUrl + "Poi/rank", self.userRank)
       .then(function (response) {
           if(response.data.message == "true"){
@@ -462,39 +439,39 @@ self.orderPoi=function (poiid,text)
           }
       }
       if(self.newReview.userRank!=""){
-          
+
           if(self.newReview.userRank == "1" || self.newReview.userRank == "2" || self.newReview.userRank == "3" || self.newReview.userRank == "4" || self.newReview.userRank == "5"){
               self.addRank($scope.indxCtrl.userName,mypoiid,self.newReview.userRank);
           }
       }
-   }     
+   }
    $scope.preclick = function(myid)
    {
        var x = 0;
        for(var i = 0; i < self.points.length; i++){
-       
+
            if(self.points[i].id == myid){
-              
+
                self.currentPOI = self.points[i].point;
                x = i;
-           
+
            }
        }
        self.poiRank(self.currentPOI.PoiId);
        self.points[x].point.Views = self.points[x].point.Views + 1;
-       
+
    }
 
    $scope.btnclick=function(myid){
        $scope.preclick(myid);
        self.modal.style.display = "block";
-   }   
-   
+   }
+
    $scope.spanclick=function(){
-       
+
        self.modal.style.display = "none";
    }
-   
+
    window.onclick = function(event) {
        if (event.target == self.modal) {
            self.modal.style.display = "none";
@@ -502,5 +479,4 @@ self.orderPoi=function (poiid,text)
    }
 }]);
    ///////////////////////////////////////////////////////////////////////////////////////////////
-*/ 
-  
+*/
