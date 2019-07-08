@@ -188,6 +188,8 @@ router.get('/lastTwoSaved', function (req, res) {
 
 router.get('/savedByDate', function (req, res) {
     var username = req.query.username;
+    console.log("username is: " + username);
+    console.log("token is: " + req.decoded.payload.userName);
     if (username == req.decoded.payload.userName) {
         var statement = "select * from UserPoints where Username like '" + username + "' ORDER BY DateSaved DESC";
         DButilsAzure.execQuery(statement).then(function (result1) {

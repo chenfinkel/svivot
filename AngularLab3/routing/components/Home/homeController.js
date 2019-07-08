@@ -164,37 +164,6 @@ angular.module('citiesApp')
             }
         }
 
-
-
-        /*self.popUp = function () {
-            self.username.userName = self.userName;
-            self.answers();
-            self.getPassword();
-
-        }*/
-
-
-        self.modal = document.getElementById('myModal');
-        self.span = document.getElementsByClassName("close")[0];
-        self.btn = document.getElementById("myBtn");
-
-
-        $scope.btnclick = function () {
-
-            self.modal.style.display = "block";
-        }
-
-        $scope.spanclick = function () {
-
-            self.modal.style.display = "none";
-        }
-
-        window.onclick = function (event) {
-            if (event.target == self.modal) {
-                self.modal.style.display = "none";
-            }
-        }
-
         /////////// THIS IS THE FOR POINTS SECTION ///////////
         
         

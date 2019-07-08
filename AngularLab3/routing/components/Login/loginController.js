@@ -107,13 +107,6 @@ angular.module('citiesApp')
 
         self.modal = document.getElementById('myModal');
         self.span = document.getElementsByClassName("close")[0];
-        self.btn = document.getElementById("myBtn");
-
-
-        /*$scope.btnclick = function () {
-
-            self.modal.style.display = "block";
-        }*/
 
         $scope.spanclick = function () {
 

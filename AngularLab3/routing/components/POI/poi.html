@@ -6,106 +6,22 @@
             <td ng-style="{'width': '20%'}"><span class="myT">Favorite</span></td>
         </tr>
     
-        <tr ng-style="{'bgcolor': '#669900'}" ng-repeat="point in poiCtrl.points">
-            <td ng-style="{'width': '40%'}"  ng-click="btnclick(point.id)">
-                <span class="myT2"><span ng-bind="point.point.Name" ></span></span>
+        <tr ng-style="{'bgcolor': '#669900'}" ng-repeat="p in poiCtrl.points">
+            <td ng-style="{'width': '40%'}"  ng-click="btnclick(p.id)">
+                <span class="myT2"><span ng-bind="p.point.Name" ></span></span>
             </td>
             
-            <td ng-style="{'width': '40%'}"  ng-click="btnclick(point.id)">
-                <img ng-style="{'height': '100px', 'width': '100px'}" ng-src="{{point.point.imagePath}} ">
+            <td ng-style="{'width': '40%'}"  ng-click="btnclick(p.id)">
+                <img ng-style="{'height': '100px', 'width': '100px'}" ng-src="{{p.point.imagePath}} ">
             </td>
     
             <td ng-style="{'width': '40%'}">
-                <!--<button ng-click="poiCtrl.selectedCity(id)"> add city</button>-->
                 <label class="switch">
-                        <input type="checkbox" ng-checked="point.checked" ng-click="poiCtrl.switch(point.id)">
+                        <input type="checkbox" ng-checked="p.checked" ng-click="poiCtrl.switch(p.id)">
                         <span class="slider round"></span>
                 </label>
             </td>
         </tr>
 </table>
-
-
-
-<div id="myModal" class="modal">
-
-        <!-- Modal content -->
-        <div class="modal-content">
-                <span class="close" ng-click="spanclick()">&times;</span>
-                <p><span class="myT"><span ng-bind="$scope.indx.currentPOI.Title"></span></span></p>
-
-                <table ng-style="{'align': 'center', 'width': '100%', 'dir': 'ltr'}">
-                        <tr ng-style="{'bgcolor': '#669900'}">
-                                <td ng-style="{'width': '40%'}"><span class="myT">Picture</span></td>
-                                <td ng-style="{'width': '20%'}"><span class="myT">Views</span></td>
-                                <td ng-style="{'width': '20%'}"><span class="myT">Rank</span></td>
-                                <td ng-style="{'width': '20%'}"><span class="myT">Description</span></td>
-                        </tr>
-                        <tr ng-style="{'bgcolor': '#669900'}">
-                                <td ng-style="{'width': '40%'}">
-                                        <img ng-style="{'height': '200px', 'width': '200px'}" ng-src="{{poiCtrl.currentPOI.PicturePath}} " >
-                                </td>
-                                <td ng-style="{'width': '20%'}">
-                                        <span class="myT2"><span ng-bind="poiCtrl.currentPOI.Views"></span></span>
-                                </td> 
-                                <td ng-style="{'width': '20%'}">
-                                        <span class="myT2"><span ng-bind="poiCtrl.currentPOIrank">%</span></span>
-                                </td>
-                                <td ng-style="{'width': '20%'}">
-                                        <span class="myT2"><span ng-bind="poiCtrl.currentPOI.Description"></span></span>
-                                </td>
-                        </tr>
-                </table>
-                <br>
-                <br>
-                <br>
-                <table  ng-style="{'align': 'center', 'width': '100%', 'dir': 'ltr'}">
-                        <tr ng-style="{'bgcolor': '#669900'}">
-                                <td ng-style="{'width': '50%'}">
-                                        <table ng-style="{'align': 'center', 'width': '100%', 'dir': 'ltr'}">
-                                                <tr ng-style="{'bgcolor': '#669900'}">
-                                                        <td ng-style="{'width': '100%'}"><span class="myT">Add New Review</span></td>  
-                                                </tr>
-                                                <tr ng-style="{'bgcolor': '#669900'}">
-                                                        <td ng-style="{'width': '100%'}">
-                                                                <form name="form" novalidate>
-                                                                        <label>Review Description:
-                                                                                <input type="text" name="RD" ng-model="poiCtrl.newReview.userReview" required />
-                                                                        </label>
-                                                                        <br/>
-                                                                        <label>Rank:
-                                                                                <input type="text" ng-model="poiCtrl.newReview.userRank" name="rank" required />
-                                                                        </label>
-                                                                        <br />
-                                                                        <input type="submit" value="Add" ng-disabled="poiCtrl.disableButton" ng-click="addR()"/>
-                                                                        
-                                                                </form>
-                                                        </td>
-                                                </tr>
-                                        </table>
-                                </td>
-
-
-
-                                <td ng-style="{'width': '50%'}">
-
-                                        <table ng-style="{'align': 'center', 'width': '100%', 'dir': 'ltr'}">
-                                                <tr ng-style="{'bgcolor': '#669900'}">
-                                                        <td ng-style="{'width': '100%'}"><span class="myT">Two Last Review</span></td>  
-                                                </tr>
-
-                                                <tr ng-style="{'bgcolor': '#669900'}" ng-repeat="R in poiCtrl.reviews">
-                                                        <td ng-style="{'width': '100%'}">
-                                                                <span class="myT2"><span ng-bind="R.myD"></span></span>
-                                                        </td>
-                                                </tr> 
-                                        </table>
-
-                                </td>     
-                        </tr> 
-                </table>
-        </div>
-              
-</div>
 
 
