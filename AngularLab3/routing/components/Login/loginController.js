@@ -77,7 +77,7 @@ angular.module('citiesApp')
                     return 0;
                 }
             }, function (response) {
-                self.login.content = "Oops, something went wrong!";
+                //self.login.content = "Oops, something went wrong!";
             });
         }
 

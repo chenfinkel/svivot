@@ -6,19 +6,19 @@
             <td ng-style="{'width': '20%'}"><span class="myT">Favorite</span></td>
         </tr>
     
-        <tr ng-style="{'bgcolor': '#669900'}" ng-repeat="city in poiCtrl.cities">
-            <td ng-style="{'width': '40%'}"  ng-click="btnclick(city.id)">
-                <span class="myT2"><span ng-bind="city.city.Title" ></span></span>
+        <tr ng-style="{'bgcolor': '#669900'}" ng-repeat="point in poiCtrl.points">
+            <td ng-style="{'width': '40%'}"  ng-click="btnclick(point.id)">
+                <span class="myT2"><span ng-bind="point.point.Name" ></span></span>
             </td>
             
-            <td ng-style="{'width': '40%'}"  ng-click="btnclick(city.id)">
-                <img ng-style="{'height': '100px', 'width': '100px'}" ng-src="{{city.city.PicturePath}} ">
+            <td ng-style="{'width': '40%'}"  ng-click="btnclick(point.id)">
+                <img ng-style="{'height': '100px', 'width': '100px'}" ng-src="{{point.point.imagePath}} ">
             </td>
     
             <td ng-style="{'width': '40%'}">
                 <!--<button ng-click="poiCtrl.selectedCity(id)"> add city</button>-->
                 <label class="switch">
-                        <input type="checkbox" ng-checked="city.checked" ng-click="poiCtrl.checkButton(city.city.PoiId)">
+                        <input type="checkbox" ng-checked="point.checked" ng-click="poiCtrl.switch(point.id)">
                         <span class="slider round"></span>
                 </label>
             </td>

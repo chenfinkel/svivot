@@ -187,8 +187,8 @@ router.get('/lastTwoSaved', function (req, res) {
 
 
 router.get('/savedByDate', function (req, res) {
-    var username = req.query.userName; // was username instead of userName
-    if (username == req.decoded.payload.username) { //was userName 
+    var username = req.query.username;
+    if (username == req.decoded.payload.userName) {
         var statement = "select * from UserPoints where Username like '" + username + "' ORDER BY DateSaved DESC";
         DButilsAzure.execQuery(statement).then(function (result1) {
             if (result1.length > 0) {
@@ -272,7 +272,7 @@ router.post('/savePoint', function (req, res) {
 
 router.get('/savedByUserOrder', function (req, res) {
     var username = req.query.username;
-    if (username == req.decoded.payload.username) { // done the same manipulation to username
+    if (username == req.decoded.payload.userName) {
         var statement = "select * from UserPoints where Username like '" + username + "' order by PointIndex ASC ";
         DButilsAzure.execQuery(statement).then(function (result1) {
             if (result1.length > 0) {
