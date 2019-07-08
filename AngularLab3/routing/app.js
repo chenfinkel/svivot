@@ -6,9 +6,7 @@ app.config(['$locationProvider', '$routeProvider', function($locationProvider, $
     $locationProvider.hashPrefix('');
 
 
-    $routeProvider/*.when('/', {
-        template: '<h1>This is the default route</h1>'
-    })*/
+    $routeProvider
         .when('/about', {
             templateUrl: 'components/About/about.html',
             controller : 'aboutController as abtCtrl'

@@ -41,32 +41,7 @@ angular.module('citiesApp')
                     });
             }
         }
-
-        self.getAllSaved = function () {
-            $http({
-                url: self.serverUrl + "Poi/savedByDate",
-                method: "GET",
-                headers: {
-                    'x-auth-token': localStorageModel.getLocalStorage('token')
-                },
-                params: { username: self.username }
-            })
-                .then(function (response) {
-                    if (response.data == "No saved points") {
-                        localStorageModel.updateLocalStorage('listFav', []);
-                    } else {
-                        for (i = 0; i < saved.length; i++) {
-                            list[i] = saved[i].PointID;
-                        }
-                        localStorageModel.updateLocalStorage('listFav', list);
-                        $scope.indxCtrl.numberOfSaved = list.length;
-                    }
-                }, function (response) {
-                    // self.reg.content = response.data
-                });
-        }
-
-        //self.getAllSaved();
+        
         self.getAllPoints();
 
         self.pressCheck = function () {
