@@ -1,7 +1,6 @@
 
 
-angular.module('citiesApp')
-    // .service('myService', function () { this.set = function() {return "hello"} })
+angular.module('parisApp')
     .service('setHeadersToken',[ '$http', function ($http) {
 
         let token = ""
@@ -9,7 +8,6 @@ angular.module('citiesApp')
         this.set = function (t) {
             token = t
             $http.defaults.headers.common[ 'x-access-token' ] = t
-            // $httpProvider.defaults.headers.post[ 'x-access-token' ] = token
             console.log("set")
 
         }
@@ -28,19 +26,19 @@ angular.module('citiesApp')
         self.countChecked=0;
         self.valid=true;
         self.user = {
-            username: "guest",
-            Password: "abcd",
-            Fname:"a",
-            Lname:"b",
-            Country:"c",
-            City:"d",
-            museums:"e",
-            nature:"f",
-            food:"g",
-            nightlife: "h",
-            Answer1:"i",
-            Answer2:"j",
-            mail:"k"
+            username: "",
+            Password: "",
+            Fname:"",
+            Lname:"",
+            Country:"",
+            City:"",
+            museums:"",
+            nature:"",
+            food:"",
+            nightlife: "",
+            Answer1:"",
+            Answer2:"",
+            mail:""
         }
         self.checkBoxFirst=true;
         self.Country = [];
@@ -119,7 +117,6 @@ angular.module('citiesApp')
 
         self.signUp = function () {
             self.exist = true;
-            // register user
             $http({
                 url:self.serverUrl + "User/register",
                 method:"POST",
@@ -143,7 +140,6 @@ angular.module('citiesApp')
                     self.signUp.content = response.data;
                     $location.path('/login');
                 }, function (response) {
-                    //Second function handles error
                     self.signUp.content = "";
                     errors = response.data.error;
                     for (i = 0; i < errors.length; i++){

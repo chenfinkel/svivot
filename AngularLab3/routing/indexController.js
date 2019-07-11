@@ -1,4 +1,4 @@
-angular.module('citiesApp')
+angular.module('parisApp')
     .controller('indexController',['$location','$scope','$http', 'setHeadersToken','localStorageModel', function ($location,$scope, $http, setHeadersToken,localStorageModel) {
 
 
@@ -9,7 +9,7 @@ angular.module('citiesApp')
         self.headers = [
             {hashbang:"#/login",value:"Login"},
             {hashbang:"#/register",value:"Register"},
-            {hashbang:"#/poi",value:"POI"},
+            {hashbang:"#/poi",value:"Points of Interest"},
             {hashbang:"#/about",value:"About"}];
 
         self.modal = document.getElementById('myModal');

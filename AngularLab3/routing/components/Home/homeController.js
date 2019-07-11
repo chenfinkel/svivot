@@ -1,5 +1,5 @@
 
-angular.module('citiesApp')
+angular.module('parisApp')
     .controller('homeController', ['$location', '$scope', '$http', 'setHeadersToken', 'localStorageModel', function ($location, $scope, $http, setHeadersToken, localStorageModel) {
 
         self = this;
@@ -12,9 +12,8 @@ angular.module('citiesApp')
         self.show = false;
         self.username = $scope.indxCtrl.username;
 
-
+        
         self.lastSaved = function () {
-            // register user
             $http({
                 url: self.serverUrl + "Poi/lastTwoSaved",
                 method: "GET",
@@ -43,12 +42,10 @@ angular.module('citiesApp')
                                     k++;
                                 }
                             }, function (response) {
-                                //self.reg.content = response.data
                             });
                             
                     }
                 }, function (response) {
-                    //self.reg.content = response.data
                 });
         }
 
@@ -74,7 +71,6 @@ angular.module('citiesApp')
 
 
                 }, function (response) {
-                    //self.reg.content = response.data
                 });
         }
 
@@ -110,7 +106,6 @@ angular.module('citiesApp')
                     }
                     self.pressCheck();
                 }, function (response) {
-                    // self.reg.content = response.data
                 });
         }
 
@@ -165,7 +160,6 @@ angular.module('citiesApp')
             }
         }
 
-        /////////// THIS IS THE FOR POINTS SECTION ///////////
 
         self.modal = document.getElementById('myModal');
         self.span = document.getElementsByClassName("close")[0];

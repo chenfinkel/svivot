@@ -1,4 +1,4 @@
-angular.module('citiesApp')
+angular.module('parisApp')
     .controller('indexController',['setHeadersToken', function (setHeadersToken) {
 
 

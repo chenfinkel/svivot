@@ -1,11 +1,11 @@
 
-angular.module('citiesApp')
+angular.module('parisApp')
 .controller('loginController', ['$location','$scope','$http', 'setHeadersToken','localStorageModel', function ($location,$scope, $http, setHeadersToken,localStorageModel) {
 
         self = this;
         self.serverUrl = 'http://localhost:3000/';
 
-        //update index controller - guest
+
         $scope.indxCtrl.headers = [
             {hashbang:"#/login",value:"Login"},
             {hashbang:"#/register",value:"Register"},
@@ -78,7 +78,6 @@ angular.module('citiesApp')
                     return 0;
                 }
             }, function (response) {
-                //self.login.content = "Oops, something went wrong!";
             });
         }
 
@@ -121,8 +120,6 @@ angular.module('citiesApp')
         }
 
         self.threepopular();
-
-        /////////// THIS IS THE FOR POINTS SECTION ///////////
         
         
         self.pointLastReviews = function (id) {

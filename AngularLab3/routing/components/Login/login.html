@@ -1,6 +1,6 @@
-<p><span id="abdror" data-shadow-text="Text-Shadow">Paris Advisor <br> best POI management application</span></p>
+<center></canter><p><span id="title" data-shadow-text="Text-Shadow">Paris-Advisor</span></p>
 
-<p><span class="myT">please log in</span></p>
+<p><span style="font-size: 20pt">Log in:</span></p>
 <p>
         <form name="form" novalidate>
                 <label><span class="myT2">Username:</span>
@@ -22,30 +22,33 @@
                 </label>
                 </br>
                 <input type="submit" ng-click="lgnCtrl.login()" value="Login" ng-disabled="form.$invalid " />
-                <input type="submit" ng-click="lgnCtrl.goToRegister()" value="Move to Register Page" />
                 <input type="submit" ng-click="lgnCtrl.goToRestorePass()" value="Forgot Password?" />
+                <br>
+                <input type="submit" ng-click="lgnCtrl.goToRegister()" value="Move to Register Page" />
+                
         </form>
 
 
-        <p><span class="myT">3 Suggested Points Of Interest</span></p>
-        <table ng-style="{'align': 'center', 'width': '80%', 'dir': 'ltr'}">
+        <p><span style="font-size: 20pt">Suggested for you</span></p>
+        <table ng-style="{'align': 'center', 'width': '30%', 'dir': 'ltr'}">
                 <tr ng-style="{'bgcolor': '#669900'}">
-                        <td ng-style="{'width': '40%'}"><span class="myT2">Point Of Interest</span></td>
-                        <td ng-style="{'width': '40%'}"><span class="myT2">Point Of Interest Picture</span></td>
+                        <td ng-style="{'width': '30%'}"><span class="myT2"></span></td>
+                        <td ng-style="{'width': '30%'}"><span class="myT2"></span></td>
                 </tr>
 
-                <tr ng-style="{'bgcolor': '#669900'}" ng-repeat="popular in lgnCtrl.threePopular">
-                        <td ng-style="{'width': '40%'}" ng-click="btnclick(popular.id)">
+                <tr ng-style="{'align': 'center','bgcolor': '#669900'}" ng-repeat="popular in lgnCtrl.threePopular">
+                        <td ng-style="{'width': '30%'}" ng-click="btnclick(popular.id)">
                                 <span class="myT2">{{popular.point.Name}}</span>
                         </td>
 
-                        <td ng-style="{'width': '40%'}" ng-click="btnclick(popular.id)">
+                        <td ng-style="{'align': 'center','width': '30%'}" ng-click="btnclick(popular.id)">
                                 <img ng-style="{'height': '100px', 'width': '100px', 'cursor': 'pointer'}"
                                         ng-src="{{popular.point.imagePath}} ">
                         </td>
                 </tr>
         </table>
 </p>
+</center>
 
 
 

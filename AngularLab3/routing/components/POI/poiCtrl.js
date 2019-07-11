@@ -1,4 +1,4 @@
-angular.module('citiesApp')
+angular.module('parisApp')
     .controller('poiCtrl', ['$location', '$scope', '$http', 'setHeadersToken', 'localStorageModel', function ($location, $scope, $http, setHeadersToken, localStorageModel) {
 
 
@@ -14,9 +14,20 @@ angular.module('citiesApp')
             "Nature",
             "Food",
             "NightLife"];
+        
+        self.Category1 = "";
+
+        self.sort = function(){
+            self.points.sort(function(a,b){return a.point.Rank - b.point.Rank})
+        }
+
+        self.all = function(){
+            self.Category1 = "";
+        }
 
 
         self.getAllPoints = function () {
+            var k = 0;
             for (var i = 0; i < self.category.length; i++) {
                 $http({
                     url: self.serverUrl + "Poi/pointByCategory",
@@ -27,17 +38,17 @@ angular.module('citiesApp')
                         if (response.data != "No points in this category") {
                             result = response.data.result;
                             for (i = 0; i < result.length; i++) {
-                                self.points[i] = {
-                                    id: i,
+                                self.points[k] = {
+                                    id: k,
                                     point: result[i],
                                     checked: false
                                 };
+                                k++;
                             }
                             self.pressCheck();
                         }
 
                     }, function (response) {
-                        //self.reg.content = response.data
                     });
             }
         }
@@ -53,8 +64,6 @@ angular.module('citiesApp')
             }
         }
 
-
-        /////////// THIS IS THE FOR POINTS SECTION ///////////
 
         
         self.modal = document.getElementById('myModal');

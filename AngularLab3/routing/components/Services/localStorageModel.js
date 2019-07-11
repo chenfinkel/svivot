@@ -1,4 +1,4 @@
-angular.module("citiesApp")
+angular.module("parisApp")
     .service('localStorageModel', ['localStorageService', function(localStorageService) {
 
         var self=this;

@@ -1,4 +1,4 @@
-angular.module('citiesApp')
+angular.module('parisApp')
     .controller('favoriteController', ['$location', '$scope', '$http', 'setHeadersToken', 'localStorageModel', function ($location, $scope, $http, setHeadersToken, localStorageModel) {
         if (!$scope.indxCtrl.showSavedIcon) {
             $location.path('/login');
@@ -9,9 +9,10 @@ angular.module('citiesApp')
 
 
         self.username = $scope.indxCtrl.username;
-        self.Category1 = "";//Category1
+        self.Category1 = "";
 
         self.Rank = "";
+        self.temp = {};
 
         self.ordering = [];
 
@@ -31,6 +32,10 @@ angular.module('citiesApp')
             "Food",
             "NightLife"];
 
+            self.all = function(){
+                self.Category1 = "";
+            }
+
         self.getAllSaved = function () {
             $http({
                 url: self.serverUrl + "Poi/savedByDate",
@@ -46,13 +51,13 @@ angular.module('citiesApp')
                     } else {
                         var k = 0;
                         list = [];
-                        temp = response.data.result;
-                        for (i = 0; i < temp.length; i++) {
-                            list[i] = temp[i].PointID;
+                        self.temp = response.data.result;
+                        for (i = 0; i < self.temp.length; i++) {
+                            list[i] = self.temp[i].PointID;
                             $http({
                                 url: self.serverUrl + "Poi/",
                                 method: "GET",
-                                params: { pointID: temp[i].PointID }
+                                params: { pointID: self.temp[i].PointID }
                             })
                                 .then(function (response) {
                                     temp2 = response.data.result;
@@ -66,48 +71,31 @@ angular.module('citiesApp')
                                         k++;
                                     }
                                 }, function (response) {
-                                    //self.reg.content = response.data
                                 });
                             localStorageModel.updateLocalStorage('listFav', list);
                             $scope.indxCtrl.numberOfSaved = list.length;
                         }
                     }
                 }, function (response) {
-                    // self.reg.content = response.data
                 });
         }
 
         self.getAllSaved();
 
-
-        self.orderTheArray = function () {
-            list = [];
-            self.ordering;
-            self.points;
-            for (var i = 0; i < self.ordering.length; i++) {
-                for (var j = 0; j < self.points.length; j++) {
-                    if (self.ordering[i] == self.points[j].point.PoiId) {
-                        list.push(self.points[j])
-                    }
-                }
-            }
-            for (var i = 0; i < self.points.length; i++) {
-                if (!list.includes(self.points[i])) {
-                    list.push(self.points[i]);
-                }
-            }
-            self.points = list;
+        self.sortUserOrder = function(){
+            self.points.sort(function(a,b){
+                return a.userIndex - b.userIndex})
         }
 
 
         self.order = function (id) {
             console.log("id is: "+ id);
             pid = self.points[id].point.PointID;
-            index = self.points[id].point.userIndex;
-            console.log("userindex is: " + index);
+            index = self.points[id].userIndex;
             var indexNumber = parseInt(index);
             if (!isNaN(indexNumber)) {
                 if (indexNumber > 0) {
+                    self.points[id].userIndex = indexNumber;
                     $http({
                         url: self.serverUrl + "Poi/savedIndex",
                         method: "POST",
@@ -226,7 +214,7 @@ angular.module('citiesApp')
         $scope.btnclick = function (id) {
             $scope.updateSelectedPoint(id);
             self.pointLastReviews(id);
-            $scope.indxCtrl.loggedIn = false;
+            $scope.indxCtrl.loggedIn = true;
             $scope.indxCtrl.modal.style.display = "block";
         }
 
@@ -238,245 +226,3 @@ angular.module('citiesApp')
 
 
     }]);
-
-
-
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////
-/**   self.disableButton=true;
-  if(self.token!="")
-  {
-      self.disableButton=false;
-  }
-  else
-  {
-      self.disableButton=true;
-  }
-
-
-  self.currentPOI={};
-  self.reviews=[];
-  self.firstLastReview={};
-  self.secLastReview={};
-  self.poi2lastR = function(myid){
-   $http({
-       url:self.serverUrl + "Poi/lastTwoReviews",
-       method:"GET",
-       params:{PoiId:myid}
-   })
-   .then(function (response) {
-       if(response.data.message == "no review for this poi"){
-
-           self.firstLastReview="no review for this poi";
-           self.secLastReview="no review for this poi";
-       }
-       else if(response.data.message == "No reviews"){
-    //       window.alert("errorrrrrrrrrrr");
-       }
-       else if(response.data.message == "2 reviews"){
-
-           self.firstLastReview=response.data.firstPoi.review;
-           self.secLastReview=response.data.secondPoi.review;
-       }
-       else{
-
-           for (var x in response.data){
-               self.firstLastReview=response.data[x].review;
-               self.secLastReview="no review for this poi";
-           }
-       }
-       self.reviews[0] = {
-           myD:self.firstLastReview
-       };
-       self.reviews[1] = {
-           myD:self.secLastReview
-       };
-   }, function (response) {
-   //    window.alert("2 last review failed");
-   });
-}
-
-   self.currentPOIrank = {};
-   self.poiRank = function(myid){
-       $http({
-           url:self.serverUrl + "Poi/rank",
-           method:"GET",
-           params:{PoiId:myid}
-       })
-       .then(function (response) {
-           if(response.data.average == "Problem came up"){
-             //  window.alert("no avg");
-           }
-           else{
-               self.currentPOIrank = (response.data.average/5)*100;
-               if(self.currentPOIrank == 0){
-                   self.currentPOIrank="No one rank this poi";
-               }
-               else{
-                   self.currentPOIrank= self.currentPOIrank +"%";
-               }
-           }
-           self.raiseView(myid);
-       }, function (response) {
-         //  window.alert("poi rank failed");
-       });
-   }
-
-   self.poiRankS = function(myid){
-      $http({
-          url:self.serverUrl + "Poi/rank",
-          method:"GET",
-          params:{PoiId:myid}
-      })
-      .then(function (response) {
-          if(response.data.average == "Problem came up"){
-           //   window.alert("no avg");
-          }
-          else{
-//window.alert(response.data.average);
-              self.currentPOIrank = (response.data.average/5)*100;
-              if(self.currentPOIrank == 0){
-                  self.currentPOIrank="No one rank this poi";
-              }
-              else{
-                  self.currentPOIrank= self.currentPOIrank +"%";
-              }
-          }
-      }, function (response) {
-      //    window.alert("poi rank failed");
-      });
-  }
-
-   self.raiseView = function(myid){
-
-       $http({
-           url:self.serverUrl + "Poi/viewPoi",
-           method:"GET",
-           params:{PoiId:myid}
-       })
-       .then(function (response) {
-           if(response.data.message == "No such poi exist"){
-              // window.alert("problem in raise view by 1");
-           }
-           if(response.data.message == "true"){
-
-           }
-           self.poi2lastR(myid);
-       }, function (response){
-          // window.alert("failed in raise view by 1");
-       });
-   }
-
-   self.modal=document.getElementById('myModal');
-   self.span = document.getElementsByClassName("close")[0];
-   self.btn = document.getElementById("myBtn");
-
-   self.userReview = {
-      userName: "s",
-      PoiId: "d",
-      text: "f",
-      token:"h"
-  };
-
-  self.userRank = {
-      userName: "s",
-      PoiId: "d",
-      rank: "f",
-      token:"h"
-  };
-
-   self.addReview = function(myid,mytext){
-      self.userReview.userName = $scope.indxCtrl.userName;
-      self.userReview.PoiId = myid;
-      self.userReview.text = mytext;
-      self.userReview.token=self.token;
-      $http.post(self.serverUrl + "Poi/review", self.userReview)
-      .then(function (response) {
-          if(response.data.message == "true"){
-              self.secLastReview = self.firstLastReview;
-              self.firstLastReview = mytext;
-              self.reviews[0] = {
-                  myD:self.firstLastReview
-              };
-              self.reviews[1] = {
-                  myD:self.secLastReview
-              };
-          }
-          else{
-            //  window.alert("FAIL");
-          }
-      }, function (response) {
-         // window.alert("liorlior");
-      });
-   }
-
-   self.addRank = function(myid,myrank){
-      self.userRank.userName = $scope.indxCtrl.userName;
-      self.userRank.PoiId = myid;
-      self.userRank.rank = myrank;
-      self.userRank.token=self.token;
-      $http.post(self.serverUrl + "Poi/rank", self.userRank)
-      .then(function (response) {
-          if(response.data.message == "true"){
-              self.poiRankS(myid);
-          }
-          else{
-             // window.alert("FAIL");
-          }
-      }, function (response) {
-          //window.alert("liorlior");
-      });
-   }
-
-   self.newReview={
-       userReview:"",
-       userRank:""
-   };
-   $scope.addR=function(){
-      var mypoiid = self.currentPOI.PoiId;
-      if(self.newReview.userReview!=""){
-          if(self.newReview.userReview != null){
-              self.addReview($scope.indxCtrl.userName,mypoiid,self.newReview.userReview);
-          }
-      }
-      if(self.newReview.userRank!=""){
-
-          if(self.newReview.userRank == "1" || self.newReview.userRank == "2" || self.newReview.userRank == "3" || self.newReview.userRank == "4" || self.newReview.userRank == "5"){
-              self.addRank($scope.indxCtrl.userName,mypoiid,self.newReview.userRank);
-          }
-      }
-   }
-   $scope.preclick = function(myid)
-   {
-       var x = 0;
-       for(var i = 0; i < self.points.length; i++){
-
-           if(self.points[i].id == myid){
-
-               self.currentPOI = self.points[i].point;
-               x = i;
-
-           }
-       }
-       self.poiRank(self.currentPOI.PoiId);
-       self.points[x].point.Views = self.points[x].point.Views + 1;
-
-   }
-
-   $scope.btnclick=function(myid){
-       $scope.preclick(myid);
-       self.modal.style.display = "block";
-   }
-
-   $scope.spanclick=function(){
-
-       self.modal.style.display = "none";
-   }
-
-   window.onclick = function(event) {
-       if (event.target == self.modal) {
-           self.modal.style.display = "none";
-       }
-   }
-}]);
-   ///////////////////////////////////////////////////////////////////////////////////////////////
-*/

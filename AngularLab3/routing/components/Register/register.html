@@ -1,7 +1,7 @@
-<p><span id="abdror"data-shadow-text="Text-Shadow">Paris Advisor <br>Registeretion page</span></p>
+<center><p><span id="title"data-shadow-text="Text-Shadow">Paris-Advisor <br>Register</span></p>
 <p><div class="reg">
   <form name="form" novalidate>
-    <label>fill all the fields below</label>
+    <label>Please enter your details</label>
     <br>
     <hr>
     <br>
@@ -72,7 +72,7 @@
                             </span>
                     </label>
                     <br>
-                    <label>Category:<br>
+                    <label>Things you like:<br>
                       <label class="container" ng-repeat="category1 in rgstrCtrl.category" name = "categoryList">
                              <input type="checkbox"  ng-model="category1.checked" data-ng-click="rgstrCtrl.tricky(category1.checked)">{{category1.id}}
                              <span class="checkmark"></span>
@@ -99,4 +99,4 @@
                     <input type="submit" ng-click="rgstrCtrl.popUp()" value="Save" ng-disabled="form.$invalid || rgstrCtrl.valid"/>
 
   </form>
-</div></p>
+</div></p></center>

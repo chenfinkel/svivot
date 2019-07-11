@@ -1,12 +1,24 @@
-<p><span id="abdror"data-shadow-text="Text-Shadow">Paris Advisor <br> Points Of Interests</span></p>
+
+<center>
+
+        <p><span id="title"data-shadow-text="Text-Shadow">Paris-Advisor</span></p>
+</br>
+category
+<select ng-model="poiCtrl.Category1" name="Category" ng-options="category1 as category1 for category1 in poiCtrl.category">
+</select>
+</br>
+<button ng-click="poiCtrl.sort()">Sort by rank</button>
+<button ng-click="poiCtrl.all()">Show all</button>
+
+
 <table ng-style="{'align': 'center', 'width': '80%', 'dir': 'ltr'}">
         <tr ng-style="{'bgcolor': '#669900'}">
-            <td ng-style="{'width': '40%'}"><span class="myT">Point Of Interest</span></td>
-            <td ng-style="{'width': '40%'}"><span class="myT">Point Of Interest Picture</span></td>
-            <td ng-style="{'width': '20%'}"><span class="myT">Favorite</span></td>
+            <td ng-style="{'width': '40%'}"><span style="font-size: 20pt">Point Of Interest</span></td>
+            <td ng-style="{'width': '40%'}"><span style="font-size: 20pt">Point Of Interest Picture</span></td>
+            <td ng-style="{'width': '20%'}"><span style="font-size: 20pt">Favorite</span></td>
         </tr>
     
-        <tr ng-style="{'bgcolor': '#669900'}" ng-repeat="p in poiCtrl.points">
+        <tr ng-style="{'bgcolor': '#669900'}" ng-repeat="p in poiCtrl.points | filter:poiCtrl.Category1" >
             <td ng-style="{'width': '40%', 'cursor': 'pointer'}"  ng-click="btnclick(p.id)">
                 <span class="myT2"><span ng-bind="p.point.Name" ></span></span>
             </td>
@@ -22,6 +34,6 @@
                 </label>
             </td>
         </tr>
-</table>
+</table></center>
 
 

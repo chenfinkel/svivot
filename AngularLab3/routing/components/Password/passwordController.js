@@ -1,6 +1,6 @@
 
 
-angular.module('citiesApp')
+angular.module('parisApp')
     // .service('myService', function () { this.set = function() {return "hello"} })
     .service('setHeadersToken',[ '$http', function ($http) {
 
